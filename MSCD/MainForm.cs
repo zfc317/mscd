@@ -348,5 +348,13 @@ namespace MSCD.UI
             }
         }
 
+        private void mapCtl_Station_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode==Keys.Escape)
+            {
+                mapCtl_Station.Action = Action.Pan;
+            }
+        }
+
     }
 }

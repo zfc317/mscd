@@ -426,6 +426,7 @@
             this.mapCtl_Station.TabIndex = 0;
             this.mapCtl_Station.TrackMode = SuperMap.UI.TrackMode.Edit;
             this.mapCtl_Station.DoubleClick += new System.EventHandler(this.mapCtl_Station_DoubleClick);
+            this.mapCtl_Station.KeyDown += new System.Windows.Forms.KeyEventHandler(this.mapCtl_Station_KeyDown);
             // 
             // tabPage_SiteMap
             // 
