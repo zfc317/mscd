@@ -1,0 +1,5 @@
+E:\Project\NET\MS\MSCD\DALFactory\bin\Debug\MSCD.DALFactory.dll
+E:\Project\NET\MS\MSCD\DALFactory\bin\Debug\MSCD.DALFactory.pdb
+E:\Project\NET\MS\MSCD\DALFactory\obj\Debug\ResolveAssemblyReference.cache
+E:\Project\NET\MS\MSCD\DALFactory\obj\Debug\MSCD.DALFactory.dll
+E:\Project\NET\MS\MSCD\DALFactory\obj\Debug\MSCD.DALFactory.pdb

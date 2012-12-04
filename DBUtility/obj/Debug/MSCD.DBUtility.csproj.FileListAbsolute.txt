@@ -1,0 +1,11 @@
+E:\Project\NET\MS\MSCD\DBUtility\bin\Debug\NLog.config
+E:\Project\NET\MS\MSCD\DBUtility\bin\Debug\MSCD.DBUtility.dll
+E:\Project\NET\MS\MSCD\DBUtility\bin\Debug\MSCD.DBUtility.pdb
+E:\Project\NET\MS\MSCD\DBUtility\bin\Debug\MSCD.Common.dll
+E:\Project\NET\MS\MSCD\DBUtility\bin\Debug\NLog.dll
+E:\Project\NET\MS\MSCD\DBUtility\bin\Debug\OpenSmtp.dll
+E:\Project\NET\MS\MSCD\DBUtility\bin\Debug\MSCD.Common.pdb
+E:\Project\NET\MS\MSCD\DBUtility\bin\Debug\NLog.xml
+E:\Project\NET\MS\MSCD\DBUtility\obj\Debug\ResolveAssemblyReference.cache
+E:\Project\NET\MS\MSCD\DBUtility\obj\Debug\MSCD.DBUtility.dll
+E:\Project\NET\MS\MSCD\DBUtility\obj\Debug\MSCD.DBUtility.pdb

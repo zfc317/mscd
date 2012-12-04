@@ -1,0 +1,17 @@
+E:\Project\NET\MS\MSCD\MSCD.SQLServerDAL\bin\Debug\NLog.config
+E:\Project\NET\MS\MSCD\MSCD.SQLServerDAL\bin\Debug\MSCD.SQLServerDAL.dll
+E:\Project\NET\MS\MSCD\MSCD.SQLServerDAL\bin\Debug\MSCD.SQLServerDAL.pdb
+E:\Project\NET\MS\MSCD\MSCD.SQLServerDAL\bin\Debug\MSCD.DBUtility.dll
+E:\Project\NET\MS\MSCD\MSCD.SQLServerDAL\bin\Debug\MSCD.IDAL.dll
+E:\Project\NET\MS\MSCD\MSCD.SQLServerDAL\bin\Debug\MSCD.Model.dll
+E:\Project\NET\MS\MSCD\MSCD.SQLServerDAL\bin\Debug\MSCD.Common.dll
+E:\Project\NET\MS\MSCD\MSCD.SQLServerDAL\bin\Debug\NLog.dll
+E:\Project\NET\MS\MSCD\MSCD.SQLServerDAL\bin\Debug\OpenSmtp.dll
+E:\Project\NET\MS\MSCD\MSCD.SQLServerDAL\bin\Debug\MSCD.DBUtility.pdb
+E:\Project\NET\MS\MSCD\MSCD.SQLServerDAL\bin\Debug\MSCD.IDAL.pdb
+E:\Project\NET\MS\MSCD\MSCD.SQLServerDAL\bin\Debug\MSCD.Model.pdb
+E:\Project\NET\MS\MSCD\MSCD.SQLServerDAL\bin\Debug\MSCD.Common.pdb
+E:\Project\NET\MS\MSCD\MSCD.SQLServerDAL\bin\Debug\NLog.xml
+E:\Project\NET\MS\MSCD\MSCD.SQLServerDAL\obj\Debug\ResolveAssemblyReference.cache
+E:\Project\NET\MS\MSCD\MSCD.SQLServerDAL\obj\Debug\MSCD.SQLServerDAL.dll
+E:\Project\NET\MS\MSCD\MSCD.SQLServerDAL\obj\Debug\MSCD.SQLServerDAL.pdb

@@ -1,0 +1,17 @@
+E:\Project\NET\MS\MSCD\MSCD.GIS\bin\Debug\MSCD.GIS.dll
+E:\Project\NET\MS\MSCD\MSCD.GIS\bin\Debug\MSCD.GIS.pdb
+E:\Project\NET\MS\MSCD\MSCD.GIS\bin\Debug\MSCD.Common.dll
+E:\Project\NET\MS\MSCD\MSCD.GIS\bin\Debug\NLog.dll
+E:\Project\NET\MS\MSCD\MSCD.GIS\bin\Debug\SuperMap.Data.dll
+E:\Project\NET\MS\MSCD\MSCD.GIS\bin\Debug\OpenSmtp.dll
+E:\Project\NET\MS\MSCD\MSCD.GIS\bin\Debug\MSCD.Common.pdb
+E:\Project\NET\MS\MSCD\MSCD.GIS\bin\Debug\NLog.xml
+E:\Project\NET\MS\MSCD\MSCD.GIS\bin\Debug\SuperMap.Data.xml
+E:\Project\NET\MS\MSCD\MSCD.GIS\bin\Debug\zh-CN\SuperMap.Data.resources.dll
+E:\Project\NET\MS\MSCD\MSCD.GIS\obj\Debug\ResolveAssemblyReference.cache
+E:\Project\NET\MS\MSCD\MSCD.GIS\obj\Debug\MSCD.GIS.DlgConfigWorkspace.resources
+E:\Project\NET\MS\MSCD\MSCD.GIS\obj\Debug\GenerateResource.read.1.tlog
+E:\Project\NET\MS\MSCD\MSCD.GIS\obj\Debug\GenerateResource.write.1.tlog
+E:\Project\NET\MS\MSCD\MSCD.GIS\obj\Debug\MSCD.GIS.dll.licenses
+E:\Project\NET\MS\MSCD\MSCD.GIS\obj\Debug\MSCD.GIS.dll
+E:\Project\NET\MS\MSCD\MSCD.GIS\obj\Debug\MSCD.GIS.pdb

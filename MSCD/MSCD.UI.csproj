@@ -1,0 +1,196 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{763CC2CE-C45B-438F-AE2D-4FACC3CFC3D8}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MSCD.UI</RootNamespace>
+    <AssemblyName>MSCD.UI</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DevExpress.Data.v12.1, Version=12.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Printing.v12.1.Core, Version=12.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Utils.v12.1, Version=12.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraBars.v12.1, Version=12.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraEditors.v12.1, Version=12.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraGrid.v12.1, Version=12.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraLayout.v12.1, Version=12.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraTreeList.v12.1, Version=12.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraVerticalGrid.v12.1, Version=12.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualC" />
+    <Reference Include="NLog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="SuperMap.Data">
+      <HintPath>D:\Program Files (x86)\SuperMap\SuperMap Objects .NET 6R\Bin\SuperMap.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="SuperMap.Mapping">
+      <HintPath>D:\Program Files\SuperMap\SuperMap Deskpro .NET 6R\Bin\SuperMap.Mapping.dll</HintPath>
+    </Reference>
+    <Reference Include="SuperMap.Realspace, Version=6.0.0.0, Culture=neutral, PublicKeyToken=0635c574ea890381, processorArchitecture=x86" />
+    <Reference Include="SuperMap.UI.Controls">
+      <HintPath>D:\Program Files\SuperMap\SuperMap Deskpro .NET 6R\Bin\SuperMap.UI.Controls.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Remoting" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="EqptManager\DlgEqptImage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EqptManager\DlgEqptImage.Designer.cs">
+      <DependentUpon>DlgEqptImage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EqptManager\DlgEqptInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EqptManager\DlgEqptInfo.Designer.cs">
+      <DependentUpon>DlgEqptInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LayerManager\DlgAddLayerType.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LayerManager\DlgAddLayerType.Designer.cs">
+      <DependentUpon>DlgAddLayerType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LayerManager\DlgLayerCatalog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LayerManager\DlgLayerCatalog.Designer.cs">
+      <DependentUpon>DlgLayerCatalog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LayerManager\DlgLayerType.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LayerManager\DlgLayerType.Designer.cs">
+      <DependentUpon>DlgLayerType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LayerManager\LayerTypeEditEnum.cs" />
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="EqptManager\DlgEqptImage.resx">
+      <DependentUpon>DlgEqptImage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EqptManager\DlgEqptInfo.resx">
+      <DependentUpon>DlgEqptInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LayerManager\DlgAddLayerType.resx">
+      <DependentUpon>DlgAddLayerType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LayerManager\DlgLayerCatalog.resx">
+      <DependentUpon>DlgLayerCatalog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LayerManager\DlgLayerType.resx">
+      <DependentUpon>DlgLayerType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\MSCD.Common.csproj">
+      <Project>{E3D8759A-C5EB-402D-9F10-F5C6029A8D1A}</Project>
+      <Name>MSCD.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MSCD.BLL\MSCD.BLL.csproj">
+      <Project>{E999EEBD-2413-4313-868E-3B75BCA68BA8}</Project>
+      <Name>MSCD.BLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MSCD.GIS\MSCD.GIS.csproj">
+      <Project>{A9EA7F95-C965-4B78-AA8A-8706F53ED05F}</Project>
+      <Name>MSCD.GIS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MSCD.Model\MSCD.Model.csproj">
+      <Project>{B1C3098C-245F-4226-9310-1F180A0AEDD9}</Project>
+      <Name>MSCD.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MSCD.Services\MSCD.Services.csproj">
+      <Project>{B52AF494-A315-4885-B4EC-553639CBBE34}</Project>
+      <Name>MSCD.Services</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
