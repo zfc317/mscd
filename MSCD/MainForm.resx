@@ -132,9 +132,6 @@
   <metadata name="imgColl_16.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>465, 17</value>
   </metadata>
-  <metadata name="imgColl_16.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>465, 17</value>
-  </metadata>
   <assembly alias="DevExpress.Utils.v12.1" name="DevExpress.Utils.v12.1, Version=12.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
   <data name="imgColl_16.ImageStream" type="DevExpress.Utils.ImageCollectionStreamer, DevExpress.Utils.v12.1" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -170,7 +167,10 @@
         JSgtk8vlyuXzebtQKKBYLBpjWdZIGfzpF+l0Oi0F/4LD4dDify6TTaEoKv05AAAAAElFTkSuQmCCCw==
 </value>
   </data>
-  <metadata name="mapNavigationControl1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <metadata name="mapNav_Station.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>567, 19</value>
+  </metadata>
+  <metadata name="mapNav_Site.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>716, 19</value>
   </metadata>
 </root>

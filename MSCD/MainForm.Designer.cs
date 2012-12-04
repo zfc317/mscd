@@ -68,7 +68,8 @@
             this.mapCtl_Site = new SuperMap.UI.MapControl();
             this.tabPage_StationScene = new DevExpress.XtraTab.XtraTabPage();
             this.sceneCtl_Station = new SuperMap.UI.SceneControl();
-            this.mapNavigationControl1 = new SuperMap.UI.MapNavigationControl(this.components);
+            this.mapNav_Station = new SuperMap.UI.MapNavigationControl(this.components);
+            this.mapNav_Site = new SuperMap.UI.MapNavigationControl(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.barMgr_Main)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dockManager1)).BeginInit();
             this.dockPanel_QueryResult.SuspendLayout();
@@ -480,15 +481,25 @@
             this.sceneCtl_Station.Size = new System.Drawing.Size(703, 356);
             this.sceneCtl_Station.TabIndex = 0;
             // 
-            // mapNavigationControl1
+            // mapNav_Station
             // 
-            this.mapNavigationControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)));
-            this.mapNavigationControl1.Location = new System.Drawing.Point(20, 20);
-            this.mapNavigationControl1.MapControl = this.mapCtl_Station;
-            this.mapNavigationControl1.MaxScale = 0D;
-            this.mapNavigationControl1.MinScale = 0D;
-            this.mapNavigationControl1.PanPercent = 25;
-            this.mapNavigationControl1.Visible = true;
+            this.mapNav_Station.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)));
+            this.mapNav_Station.Location = new System.Drawing.Point(20, 20);
+            this.mapNav_Station.MapControl = this.mapCtl_Station;
+            this.mapNav_Station.MaxScale = 0D;
+            this.mapNav_Station.MinScale = 0D;
+            this.mapNav_Station.PanPercent = 25;
+            this.mapNav_Station.Visible = true;
+            // 
+            // mapNav_Site
+            // 
+            this.mapNav_Site.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)));
+            this.mapNav_Site.Location = new System.Drawing.Point(20, 20);
+            this.mapNav_Site.MapControl = this.mapCtl_Site;
+            this.mapNav_Site.MaxScale = 0D;
+            this.mapNav_Site.MinScale = 0D;
+            this.mapNav_Site.PanPercent = 25;
+            this.mapNav_Site.Visible = true;
             // 
             // MainForm
             // 
@@ -559,8 +570,9 @@
         private DevExpress.Utils.ImageCollection imgColl_16;
         private DevExpress.XtraBars.BarButtonItem barButtonItem5;
         private DevExpress.XtraBars.BarButtonItem barButtonItem6;
-        private SuperMap.UI.MapNavigationControl mapNavigationControl1;
+        private SuperMap.UI.MapNavigationControl mapNav_Station;
         private DevExpress.XtraBars.BarButtonItem barButtonItem7;
         private DevExpress.XtraBars.BarButtonItem barButtonItem8;
+        private SuperMap.UI.MapNavigationControl mapNav_Site;
     }
 }
