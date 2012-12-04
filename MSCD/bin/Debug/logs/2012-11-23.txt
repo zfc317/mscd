@@ -1,7 +1,0 @@
-2012-11-23 14:29:26.5648|ERROR|MSCD.UI.MainForm|加载地图出错:System.IO.DirectoryNotFoundException: 未能找到路径“E:\Project\NET\MS\MSCD\MSCD\bin\Data\台区场景\台区场景.scv”的一部分。
-   在 System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
-   在 System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath)
-   在 System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options)
-   在 System.IO.StreamReader..ctor(String path, Encoding encoding, Boolean detectEncodingFromByteOrderMarks, Int32 bufferSize)
-   在 System.IO.StreamReader..ctor(String path)
-   在 MSCD.UI.MainForm.InitMap() 位置 E:\Project\NET\MS\MSCD\MSCD\MainForm.cs:行号 85

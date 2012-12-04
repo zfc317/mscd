@@ -1,7 +1,0 @@
-E:\Project\NET\MS\MSCD\MSCD.IDAL\bin\Debug\MSCD.IDAL.dll
-E:\Project\NET\MS\MSCD\MSCD.IDAL\bin\Debug\MSCD.IDAL.pdb
-E:\Project\NET\MS\MSCD\MSCD.IDAL\bin\Debug\MSCD.Model.dll
-E:\Project\NET\MS\MSCD\MSCD.IDAL\bin\Debug\MSCD.Model.pdb
-E:\Project\NET\MS\MSCD\MSCD.IDAL\obj\Debug\ResolveAssemblyReference.cache
-E:\Project\NET\MS\MSCD\MSCD.IDAL\obj\Debug\MSCD.IDAL.dll
-E:\Project\NET\MS\MSCD\MSCD.IDAL\obj\Debug\MSCD.IDAL.pdb

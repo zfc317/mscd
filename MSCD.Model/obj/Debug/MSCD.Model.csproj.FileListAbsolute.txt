@@ -1,5 +1,0 @@
-E:\Project\NET\MS\MSCD\MSCD.Model\bin\Debug\MSCD.Model.dll
-E:\Project\NET\MS\MSCD\MSCD.Model\bin\Debug\MSCD.Model.pdb
-E:\Project\NET\MS\MSCD\MSCD.Model\obj\Debug\ResolveAssemblyReference.cache
-E:\Project\NET\MS\MSCD\MSCD.Model\obj\Debug\MSCD.Model.dll
-E:\Project\NET\MS\MSCD\MSCD.Model\obj\Debug\MSCD.Model.pdb

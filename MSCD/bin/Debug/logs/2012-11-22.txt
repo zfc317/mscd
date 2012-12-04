@@ -1,4 +1,0 @@
-2012-11-22 22:27:03.9896|ERROR|MSCD.UI.MainForm|加载地图出错:System.ArgumentException: 引发类型为“System.ArgumentException”的异常。
-参数名: mapName
-   在 SuperMap.Mapping.Map.Open(String mapName)
-   在 MSCD.UI.MainForm.InitMap() 位置 E:\Project\NET\MS\MSCD\MSCD\MainForm.cs:行号 80
