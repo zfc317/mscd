@@ -1,9 +1,0 @@
-E:\Project\NET\MS\MSCD\Common\bin\Debug\MSCD.Common.dll
-E:\Project\NET\MS\MSCD\Common\bin\Debug\MSCD.Common.pdb
-E:\Project\NET\MS\MSCD\Common\bin\Debug\COM.Excel.dll
-E:\Project\NET\MS\MSCD\Common\bin\Debug\NLog.dll
-E:\Project\NET\MS\MSCD\Common\bin\Debug\OpenSmtp.dll
-E:\Project\NET\MS\MSCD\Common\bin\Debug\NLog.xml
-E:\Project\NET\MS\MSCD\Common\obj\Debug\ResolveAssemblyReference.cache
-E:\Project\NET\MS\MSCD\Common\obj\Debug\MSCD.Common.dll
-E:\Project\NET\MS\MSCD\Common\obj\Debug\MSCD.Common.pdb
