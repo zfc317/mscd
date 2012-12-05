@@ -14,7 +14,7 @@ namespace MSCD.GIS
             var fieldInfos = rs.GetFieldInfos();
             foreach (FieldInfo fieldInfo in fieldInfos)
             {
-                if (fieldInfo.IsSystemField) continue;
+                //if (fieldInfo.IsSystemField) continue;
                 var value = rs.GetFieldValue(fieldInfo.Name);
                 var valueStr = "";
                 if(value!=null)
