@@ -90,6 +90,12 @@
     <Compile Include="EqptManager\DlgEqptInfo.Designer.cs">
       <DependentUpon>DlgEqptInfo.cs</DependentUpon>
     </Compile>
+    <Compile Include="EqptManager\DlgEqptMaintain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EqptManager\DlgEqptMaintain.Designer.cs">
+      <DependentUpon>DlgEqptMaintain.cs</DependentUpon>
+    </Compile>
     <Compile Include="LayerManager\DlgAddLayerType.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -122,6 +128,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="EqptManager\DlgEqptInfo.resx">
       <DependentUpon>DlgEqptInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EqptManager\DlgEqptMaintain.resx">
+      <DependentUpon>DlgEqptMaintain.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LayerManager\DlgAddLayerType.resx">
       <DependentUpon>DlgAddLayerType.cs</DependentUpon>

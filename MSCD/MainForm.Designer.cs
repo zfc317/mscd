@@ -39,6 +39,14 @@
             this.barButtonItem2 = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem7 = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem8 = new DevExpress.XtraBars.BarButtonItem();
+            this.barButtonItem11 = new DevExpress.XtraBars.BarButtonItem();
+            this.barSubItem3 = new DevExpress.XtraBars.BarSubItem();
+            this.barButtonItem9 = new DevExpress.XtraBars.BarButtonItem();
+            this.barButtonItem10 = new DevExpress.XtraBars.BarButtonItem();
+            this.barSubItem4 = new DevExpress.XtraBars.BarSubItem();
+            this.barButtonItem12 = new DevExpress.XtraBars.BarButtonItem();
+            this.barButtonItem13 = new DevExpress.XtraBars.BarButtonItem();
+            this.barButtonItem14 = new DevExpress.XtraBars.BarButtonItem();
             this.MainMenu = new DevExpress.XtraBars.Bar();
             this.barSubItem1 = new DevExpress.XtraBars.BarSubItem();
             this.barCheckItem_LayerControl = new DevExpress.XtraBars.BarCheckItem();
@@ -54,6 +62,7 @@
             this.dockManager1 = new DevExpress.XtraBars.Docking.DockManager(this.components);
             this.dockPanel_QueryResult = new DevExpress.XtraBars.Docking.DockPanel();
             this.dockPanel2_Container = new DevExpress.XtraBars.Docking.ControlContainer();
+            this.xtraTabCtl_QueryResult = new DevExpress.XtraTab.XtraTabControl();
             this.dockPanel_LayerControl = new DevExpress.XtraBars.Docking.DockPanel();
             this.dockPanel1_Container = new DevExpress.XtraBars.Docking.ControlContainer();
             this.treeList_StationLayer = new DevExpress.XtraTreeList.TreeList();
@@ -70,9 +79,12 @@
             this.sceneCtl_Station = new SuperMap.UI.SceneControl();
             this.mapNav_Station = new SuperMap.UI.MapNavigationControl(this.components);
             this.mapNav_Site = new SuperMap.UI.MapNavigationControl(this.components);
+            this.timer_Blink = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.barMgr_Main)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dockManager1)).BeginInit();
             this.dockPanel_QueryResult.SuspendLayout();
+            this.dockPanel2_Container.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.xtraTabCtl_QueryResult)).BeginInit();
             this.dockPanel_LayerControl.SuspendLayout();
             this.dockPanel1_Container.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.treeList_StationLayer)).BeginInit();
@@ -112,9 +124,17 @@
             this.barButtonItem5,
             this.barButtonItem6,
             this.barButtonItem7,
-            this.barButtonItem8});
+            this.barButtonItem8,
+            this.barSubItem3,
+            this.barButtonItem9,
+            this.barButtonItem10,
+            this.barButtonItem11,
+            this.barSubItem4,
+            this.barButtonItem12,
+            this.barButtonItem13,
+            this.barButtonItem14});
             this.barMgr_Main.MainMenu = this.MainMenu;
-            this.barMgr_Main.MaxItemId = 12;
+            this.barMgr_Main.MaxItemId = 21;
             this.barMgr_Main.StatusBar = this.bar3;
             this.barMgr_Main.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barMgr_Main_ItemClick);
             // 
@@ -130,7 +150,10 @@
             new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItem1),
             new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItem2),
             new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItem7),
-            new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItem8)});
+            new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItem8),
+            new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItem11),
+            new DevExpress.XtraBars.LinkPersistInfo(this.barSubItem3, true),
+            new DevExpress.XtraBars.LinkPersistInfo(this.barSubItem4)});
             this.bar1.Text = " 工具条";
             // 
             // barButtonItem5
@@ -174,6 +197,67 @@
             this.barButtonItem8.Id = 11;
             this.barButtonItem8.Name = "barButtonItem8";
             this.barButtonItem8.Tag = "refresh";
+            // 
+            // barButtonItem11
+            // 
+            this.barButtonItem11.Caption = "清除";
+            this.barButtonItem11.Id = 16;
+            this.barButtonItem11.Name = "barButtonItem11";
+            this.barButtonItem11.Tag = "clear";
+            // 
+            // barSubItem3
+            // 
+            this.barSubItem3.Caption = "量算";
+            this.barSubItem3.Id = 13;
+            this.barSubItem3.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
+            new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItem9),
+            new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItem10)});
+            this.barSubItem3.Name = "barSubItem3";
+            // 
+            // barButtonItem9
+            // 
+            this.barButtonItem9.Caption = "距离";
+            this.barButtonItem9.Id = 14;
+            this.barButtonItem9.Name = "barButtonItem9";
+            this.barButtonItem9.Tag = "distance";
+            // 
+            // barButtonItem10
+            // 
+            this.barButtonItem10.Caption = "面积";
+            this.barButtonItem10.Id = 15;
+            this.barButtonItem10.Name = "barButtonItem10";
+            this.barButtonItem10.Tag = "area";
+            // 
+            // barSubItem4
+            // 
+            this.barSubItem4.Caption = "空间查询";
+            this.barSubItem4.Id = 17;
+            this.barSubItem4.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
+            new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItem12),
+            new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItem13),
+            new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItem14)});
+            this.barSubItem4.Name = "barSubItem4";
+            // 
+            // barButtonItem12
+            // 
+            this.barButtonItem12.Caption = "点查询";
+            this.barButtonItem12.Id = 18;
+            this.barButtonItem12.Name = "barButtonItem12";
+            this.barButtonItem12.Tag = "pointQuery";
+            // 
+            // barButtonItem13
+            // 
+            this.barButtonItem13.Caption = "线查询";
+            this.barButtonItem13.Id = 19;
+            this.barButtonItem13.Name = "barButtonItem13";
+            this.barButtonItem13.Tag = "lineQuery";
+            // 
+            // barButtonItem14
+            // 
+            this.barButtonItem14.Caption = "面查询";
+            this.barButtonItem14.Id = 20;
+            this.barButtonItem14.Name = "barButtonItem14";
+            this.barButtonItem14.Tag = "polygonQuery";
             // 
             // MainMenu
             // 
@@ -295,22 +379,32 @@
             this.dockPanel_QueryResult.Controls.Add(this.dockPanel2_Container);
             this.dockPanel_QueryResult.Dock = DevExpress.XtraBars.Docking.DockingStyle.Bottom;
             this.dockPanel_QueryResult.ID = new System.Guid("305f86de-4ee1-4b21-9fff-065b3d9e6631");
-            this.dockPanel_QueryResult.Location = new System.Drawing.Point(0, 0);
+            this.dockPanel_QueryResult.Location = new System.Drawing.Point(200, 238);
             this.dockPanel_QueryResult.Name = "dockPanel_QueryResult";
             this.dockPanel_QueryResult.OriginalSize = new System.Drawing.Size(200, 200);
             this.dockPanel_QueryResult.SavedDock = DevExpress.XtraBars.Docking.DockingStyle.Bottom;
             this.dockPanel_QueryResult.SavedIndex = 1;
-            this.dockPanel_QueryResult.Size = new System.Drawing.Size(912, 200);
+            this.dockPanel_QueryResult.Size = new System.Drawing.Size(709, 200);
             this.dockPanel_QueryResult.Text = "查询结果";
             this.dockPanel_QueryResult.Visibility = DevExpress.XtraBars.Docking.DockVisibility.Hidden;
             this.dockPanel_QueryResult.ClosedPanel += new DevExpress.XtraBars.Docking.DockPanelEventHandler(this.dockPanel_QueryResult_ClosedPanel);
             // 
             // dockPanel2_Container
             // 
+            this.dockPanel2_Container.Controls.Add(this.xtraTabCtl_QueryResult);
             this.dockPanel2_Container.Location = new System.Drawing.Point(4, 25);
             this.dockPanel2_Container.Name = "dockPanel2_Container";
-            this.dockPanel2_Container.Size = new System.Drawing.Size(904, 171);
+            this.dockPanel2_Container.Size = new System.Drawing.Size(701, 171);
             this.dockPanel2_Container.TabIndex = 0;
+            // 
+            // xtraTabCtl_QueryResult
+            // 
+            this.xtraTabCtl_QueryResult.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.xtraTabCtl_QueryResult.Location = new System.Drawing.Point(0, 0);
+            this.xtraTabCtl_QueryResult.Name = "xtraTabCtl_QueryResult";
+            this.xtraTabCtl_QueryResult.Size = new System.Drawing.Size(701, 171);
+            this.xtraTabCtl_QueryResult.TabIndex = 0;
+            this.xtraTabCtl_QueryResult.SelectedPageChanged += new DevExpress.XtraTab.TabPageChangedEventHandler(this.xtraTabCtl_QueryResult_SelectedPageChanged);
             // 
             // dockPanel_LayerControl
             // 
@@ -378,9 +472,9 @@
             // imgColl_16
             // 
             this.imgColl_16.ImageStream = ((DevExpress.Utils.ImageCollectionStreamer)(resources.GetObject("imgColl_16.ImageStream")));
-            this.imgColl_16.Images.SetKeyName(0, "checked.png");
-            this.imgColl_16.Images.SetKeyName(1, "indeterminate.png");
-            this.imgColl_16.Images.SetKeyName(2, "unchecked.png");
+            this.imgColl_16.Images.SetKeyName(0, "checkbox-checked.png");
+            this.imgColl_16.Images.SetKeyName(1, "checkbox-partial.png");
+            this.imgColl_16.Images.SetKeyName(2, "checkbox-unchecked.png");
             // 
             // xtraTabCtl_Map
             // 
@@ -405,13 +499,13 @@
             // 
             // mapCtl_Station
             // 
-            this.mapCtl_Station.Action = SuperMap.UI.Action.Select2;
+            this.mapCtl_Station.Action = SuperMap.UI.Action.Pan;
             this.mapCtl_Station.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.mapCtl_Station.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.mapCtl_Station.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mapCtl_Station.InteractionMode = SuperMap.UI.InteractionMode.Default;
             this.mapCtl_Station.IsCursorCustomized = false;
-            this.mapCtl_Station.IsWaitCursorEnabled = true;
+            this.mapCtl_Station.IsWaitCursorEnabled = false;
             this.mapCtl_Station.Location = new System.Drawing.Point(0, 0);
             this.mapCtl_Station.Margin = new System.Windows.Forms.Padding(48, 22, 48, 22);
             this.mapCtl_Station.MarginPanEnabled = true;
@@ -420,11 +514,13 @@
             this.mapCtl_Station.RefreshAtTracked = true;
             this.mapCtl_Station.RefreshInInvalidArea = false;
             this.mapCtl_Station.RollingWheelWithoutDelay = false;
-            this.mapCtl_Station.SelectionMode = SuperMap.UI.SelectionMode.ContainInnerPoint;
+            this.mapCtl_Station.SelectionMode = SuperMap.UI.SelectionMode.Intersect;
             this.mapCtl_Station.SelectionPixelTolerance = 1;
             this.mapCtl_Station.Size = new System.Drawing.Size(703, 356);
             this.mapCtl_Station.TabIndex = 0;
-            this.mapCtl_Station.TrackMode = SuperMap.UI.TrackMode.Edit;
+            this.mapCtl_Station.TrackMode = SuperMap.UI.TrackMode.Track;
+            this.mapCtl_Station.Tracked += new SuperMap.UI.TrackedEventHandler(this.mapCtl_Station_Tracked);
+            this.mapCtl_Station.GeometrySelectChanged += new SuperMap.UI.GeometrySelectChangedEventHandler(this.mapCtl_Station_GeometrySelectChanged);
             this.mapCtl_Station.DoubleClick += new System.EventHandler(this.mapCtl_Station_DoubleClick);
             this.mapCtl_Station.KeyDown += new System.Windows.Forms.KeyEventHandler(this.mapCtl_Station_KeyDown);
             // 
@@ -437,13 +533,13 @@
             // 
             // mapCtl_Site
             // 
-            this.mapCtl_Site.Action = SuperMap.UI.Action.Select2;
+            this.mapCtl_Site.Action = SuperMap.UI.Action.Pan;
             this.mapCtl_Site.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.mapCtl_Site.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.mapCtl_Site.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mapCtl_Site.InteractionMode = SuperMap.UI.InteractionMode.Default;
             this.mapCtl_Site.IsCursorCustomized = false;
-            this.mapCtl_Site.IsWaitCursorEnabled = true;
+            this.mapCtl_Site.IsWaitCursorEnabled = false;
             this.mapCtl_Site.Location = new System.Drawing.Point(0, 0);
             this.mapCtl_Site.Margin = new System.Windows.Forms.Padding(48, 22, 48, 22);
             this.mapCtl_Site.MarginPanEnabled = true;
@@ -452,11 +548,12 @@
             this.mapCtl_Site.RefreshAtTracked = true;
             this.mapCtl_Site.RefreshInInvalidArea = false;
             this.mapCtl_Site.RollingWheelWithoutDelay = false;
-            this.mapCtl_Site.SelectionMode = SuperMap.UI.SelectionMode.ContainInnerPoint;
+            this.mapCtl_Site.SelectionMode = SuperMap.UI.SelectionMode.Intersect;
             this.mapCtl_Site.SelectionPixelTolerance = 1;
             this.mapCtl_Site.Size = new System.Drawing.Size(703, 356);
             this.mapCtl_Site.TabIndex = 0;
             this.mapCtl_Site.TrackMode = SuperMap.UI.TrackMode.Edit;
+            this.mapCtl_Site.KeyDown += new System.Windows.Forms.KeyEventHandler(this.mapCtl_Site_KeyDown);
             // 
             // tabPage_StationScene
             // 
@@ -502,6 +599,10 @@
             this.mapNav_Site.PanPercent = 25;
             this.mapNav_Site.Visible = true;
             // 
+            // timer_Blink
+            // 
+            this.timer_Blink.Tick += new System.EventHandler(this.timer_Blink_Tick);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
@@ -520,6 +621,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.barMgr_Main)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dockManager1)).EndInit();
             this.dockPanel_QueryResult.ResumeLayout(false);
+            this.dockPanel2_Container.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.xtraTabCtl_QueryResult)).EndInit();
             this.dockPanel_LayerControl.ResumeLayout(false);
             this.dockPanel1_Container.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.treeList_StationLayer)).EndInit();
@@ -575,5 +678,15 @@
         private DevExpress.XtraBars.BarButtonItem barButtonItem7;
         private DevExpress.XtraBars.BarButtonItem barButtonItem8;
         private SuperMap.UI.MapNavigationControl mapNav_Site;
+        private DevExpress.XtraBars.BarButtonItem barButtonItem11;
+        private DevExpress.XtraBars.BarSubItem barSubItem3;
+        private DevExpress.XtraBars.BarButtonItem barButtonItem9;
+        private DevExpress.XtraBars.BarButtonItem barButtonItem10;
+        private DevExpress.XtraBars.BarSubItem barSubItem4;
+        private DevExpress.XtraBars.BarButtonItem barButtonItem12;
+        private DevExpress.XtraBars.BarButtonItem barButtonItem13;
+        private DevExpress.XtraBars.BarButtonItem barButtonItem14;
+        private DevExpress.XtraTab.XtraTabControl xtraTabCtl_QueryResult;
+        private System.Windows.Forms.Timer timer_Blink;
     }
 }

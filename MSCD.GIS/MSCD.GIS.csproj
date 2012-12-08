@@ -65,6 +65,10 @@
       <Project>{E3D8759A-C5EB-402D-9F10-F5C6029A8D1A}</Project>
       <Name>MSCD.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MSCD.Model\MSCD.Model.csproj">
+      <Project>{B1C3098C-245F-4226-9310-1F180A0AEDD9}</Project>
+      <Name>MSCD.Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="DlgConfigWorkspace.resx">

@@ -41,7 +41,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IConfig.cs" />
+    <Compile Include="IEqptAttachment.cs" />
     <Compile Include="IEqptImage.cs" />
+    <Compile Include="IEqptMaintain.cs" />
     <Compile Include="ILayerCatalog.cs" />
     <Compile Include="ILayerType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

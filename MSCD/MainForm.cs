@@ -1,10 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading;
 using System.Drawing;
 using System.Windows.Forms;
 using DevExpress.Utils;
+using DevExpress.XtraEditors;
+using DevExpress.XtraGrid;
+using DevExpress.XtraGrid.Views.Grid;
+using DevExpress.XtraTab;
 using DevExpress.XtraTreeList;
 using DevExpress.XtraTreeList.Nodes;
 using MSCD.Common;
@@ -28,7 +33,10 @@ namespace MSCD.UI
         private Workspace _workspace;
         private WaitDialogForm _waitForm;
         private MapControl _currentMapCtl;
-        private Dictionary<string,List<Layer>> _stationLayers=new Dictionary<string, List<Layer>>(); 
+        private Recordset _blinkRs;
+        private int _blinkCount;
+        private bool _isBlink;
+        private readonly Dictionary<string,List<Layer>> _stationLayers=new Dictionary<string, List<Layer>>(); 
         public MainForm()
         {
             InitializeComponent();
@@ -106,7 +114,7 @@ namespace MSCD.UI
                 //sceneCtl_Station.Action = Action3D.Pan2;
 
                 //sceneCtl_Station.SetBounds((int)layer3D.Bounds.Left, (int)layer3D.Bounds.Bottom, (int)layer3D.Bounds.Width, (int)layer3D.Bounds.Height);
-                //sceneCtl_Station.Scene.Refresh();
+                sceneCtl_Station.Scene.Refresh();
             }
             catch (Exception ex)
             {
@@ -165,6 +173,41 @@ namespace MSCD.UI
                 case "refresh":
                     if (_currentMapCtl != null) _currentMapCtl.Map.Refresh();
                     break;
+                case "clear":
+                    if (_currentMapCtl != null)
+                    {
+                        var selections = _currentMapCtl.Map.FindSelection(true);
+                        foreach (var selection in selections)
+                        {
+                            selection.Clear();
+                        }
+                        _currentMapCtl.Refresh();
+                    }
+
+                    break;
+                case "distance":
+                    if (_currentMapCtl != null) 
+                    {
+                        _currentMapCtl.TrackMode=TrackMode.Track;
+                        _currentMapCtl.Action = Action.CreatePolyline;
+                    }
+                    break;
+                case "area":
+                    if (_currentMapCtl != null)
+                    {
+                        _currentMapCtl.TrackMode = TrackMode.Track;
+                        _currentMapCtl.Action = Action.CreatePolygon;
+                    }
+                    break;
+                case "pointQuery":
+                    if (_currentMapCtl != null) _currentMapCtl.Action=Action.Select;
+                    break;
+                case "lineQuery":
+                    if (_currentMapCtl != null) _currentMapCtl.Action = Action.SelectLine;
+                    break;
+                case "polygonQuery":
+                    if (_currentMapCtl != null) _currentMapCtl.Action = Action.SelectRegion;
+                    break;
             }
         }
 
@@ -172,6 +215,8 @@ namespace MSCD.UI
         {
             var layerTypes = LayerService.INSTANCE.GetStationLayerTypes();
             var layerCatalogs = LayerService.INSTANCE.GetStationLayerCatalogs();
+            var layers = mapCtl_Station.Map.Layers;
+            
             foreach (var layerType in layerTypes)
             {
                 var catalogTn = treeList_StationLayer.AppendNode(new object[] {layerType.Name, layerType.Name, "catalog"},null);
@@ -182,7 +227,7 @@ namespace MSCD.UI
                     var layerName = layerTn["Name"].ToString();
                     if(_stationLayers.ContainsKey(layerName))
                     {
-                        if(mapCtl_Station.Map.Layers[layerName+"@mscd"].IsVisible)
+                        if (mapCtl_Station.Map.Layers[layerName + "@" + ConfigHelper.GetConfig("StationDatasourceName")].IsVisible)
                         {
                             SetCheckedNode(treeList_StationLayer,mapCtl_Station.Map,_stationLayers,layerTn,CheckState.Checked);
                         }
@@ -192,6 +237,10 @@ namespace MSCD.UI
                         }
                     }
                 }
+            }
+            foreach (var layer in layers.Cast<Layer>().Where(layer => layerCatalogs.Count(layerCatalog => layerCatalog.layerName == layer.Dataset.Name)<1))
+            {
+                layer.IsVisible = false;
             }
         }
 
@@ -253,6 +302,7 @@ namespace MSCD.UI
                     foreach (var layer in layers)
                     {
                         layer.IsVisible = checkState == CheckState.Checked;
+                        layer.IsSnapable= checkState==CheckState.Checked;
                         if (LayerService.INSTANCE.GetStationLayerInfos().First(layerInfo => layerInfo.LayerName == layerName).Queryable)
                         {
                             layer.IsSelectable = checkState == CheckState.Checked;
@@ -324,13 +374,16 @@ namespace MSCD.UI
                     rs.MoveFirst();
                     var smId = rs.GetID();
                     var layerName = rs.Dataset.Name;
-                    var values = GISUtility.RecordsetToDictionary(rs);
-                    var eqptInfo = new DlgEqptInfo(smId, layerName, values);
-                    eqptInfo.ShowDialog();
-                    if(!rs.IsClosed)
+                    var layerInfo = LayerService.INSTANCE.GetStationLayerInfos().First(l => l.LayerName == layerName);
+                    var dt = GISUtility.RecordsetToDataTable(rs, layerInfo);
+                    if (!rs.IsClosed)
                     {
                         rs.Close();
+                        rs.Dispose();
                     }
+                    var selectedRow = dt.Select(string.Format("SMID = '{0}'", smId))[0];
+                    var eqptInfo = new DlgEqptInfo(smId, layerName, ref selectedRow);
+                    eqptInfo.ShowDialog();
                 }
             }
         }
@@ -356,5 +409,134 @@ namespace MSCD.UI
             }
         }
 
+        private void mapCtl_Site_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode==Keys.Escape)
+            {
+                mapCtl_Site.Action=Action.Pan;
+            }
+        }
+
+        private void mapCtl_Station_Tracked(object sender, TrackedEventArgs e)
+        {
+            if(mapCtl_Station.Action==Action.CreatePolyline)
+            {
+                XtraMessageBox.Show(string.Format("量算距离为：{0:.00}米", e.Length), "距离量算");
+            }
+            else if(mapCtl_Station.Action==Action.CreatePolygon)
+            {
+                XtraMessageBox.Show(string.Format("量算距离为：{0:.00}平方米", e.Area), "面积量算");
+            }
+        }
+
+        private void mapCtl_Station_GeometrySelectChanged(object sender, GeometrySelectChangedEventArgs e)
+        {
+            xtraTabCtl_QueryResult.TabPages.Clear();
+            var selections = mapCtl_Station.Map.FindSelection(true);
+            dockPanel_QueryResult.Visible = selections.Length>0;
+            foreach (var selection in selections)
+            {
+                var rs = selection.ToRecordset();
+                var datasetName = rs.Dataset.Name;
+                var datasourceName = rs.Dataset.Datasource.Alias;
+                var selectedLayer = LayerService.INSTANCE.GetStationLayerInfos().First(l => l.LayerName == datasetName);
+                var dt = GISUtility.RecordsetToDataTable(rs, selectedLayer);
+                rs.Close();
+                rs.Dispose();
+                
+                var gc = new GridControl();
+                var gv = new GridView();
+                gc.Dock=DockStyle.Fill;
+                gc.MainView = gv;
+                gv.OptionsView.ShowGroupPanel = false;
+                gv.OptionsBehavior.Editable = false;
+                gc.ViewCollection.Add(gv);
+                gv.GridControl = gc;
+                gc.DataSource = dt;
+                gv.RowClick += new RowClickEventHandler(gv_RowClick);
+                gv.DoubleClick += new EventHandler(gv_DoubleClick);
+                gv.Tag = new[] {datasetName, datasourceName};
+            
+                var tab = new XtraTabPage() {Text = selectedLayer.LayerCaption};
+                tab.Controls.Add(gc);
+                xtraTabCtl_QueryResult.TabPages.Add(tab);
+            }
+        }
+
+        void gv_DoubleClick(object sender, EventArgs e)
+        {
+            var gv = sender as GridView;
+            var dtAndDs = gv.Tag as String[];
+            if(gv.FocusedRowHandle<0) return;
+            var smId = Convert.ToInt32(gv.GetFocusedRowCellValue("SMID"));
+            var selectedRow = (gv.GridControl.DataSource as DataTable).Select(string.Format("SMID = '{0}'", smId))[0];
+            var eqptInfo = new DlgEqptInfo(smId, dtAndDs[0],ref selectedRow);
+            eqptInfo.ShowDialog();
+            gv.GridControl.RefreshDataSource();
+        }
+
+        void gv_RowClick(object sender, RowClickEventArgs e)
+        {
+            var gv = sender as GridView;
+            var dtAndDs = gv.Tag as String[];
+            var rowHandle = e.RowHandle;
+            var smId = Convert.ToInt32(gv.GetRowCellValue(rowHandle, "SMID"));
+            var dataset = WorkspaceService.Instance.GetDataset(dtAndDs[1], dtAndDs[0]) as DatasetVector;
+            var rs = dataset.Query(new[] {smId}, CursorType.Static);
+            var centerPt = rs.GetGeometry().InnerPoint;
+            _currentMapCtl.Map.Center = centerPt;
+            _currentMapCtl.Map.Pan(0, 0);
+            _blinkRs = rs;
+            timer_Blink.Enabled = true;
+            timer_Blink.Interval = 500;
+            _blinkCount = 1;
+            timer_Blink.Start();
+        }
+
+        private void xtraTabCtl_QueryResult_SelectedPageChanged(object sender, TabPageChangedEventArgs e)
+        {
+            if(e.Page!=null)
+            {
+                ((e.Page.Controls[0] as GridControl).MainView as GridView).Columns["SMID"].Visible = false;
+            }
+            
+        }
+
+        private void timer_Blink_Tick(object sender, EventArgs e)
+        {
+            if(_blinkCount>3)
+            {
+                _currentMapCtl.Map.TrackingLayer.Clear();
+                _currentMapCtl.Map.RefreshTrackingLayer();
+                _blinkCount = 0;
+                timer_Blink.Stop();
+                _blinkRs.Close();
+                _blinkRs.Dispose();
+            }
+            else
+            {
+                if(_isBlink)
+                {
+                    _blinkRs.MoveFirst();
+                    while (!_blinkRs.IsEOF)
+                    {
+                        var geo = _blinkRs.GetGeometry();
+                        var blinkStyle = new GeoStyle
+                                             {FillForeColor = Color.Red,FillOpaqueRate = 60, LineColor = Color.Red,LineWidth = 2,MarkerSize = new Size2D(10,10)};
+                        geo.Style = blinkStyle;
+                        _currentMapCtl.Map.TrackingLayer.Add(geo,"blink");
+                        _currentMapCtl.Map.RefreshTrackingLayer();
+                        _blinkRs.MoveNext();
+                    }
+                    _blinkCount++;
+                }
+                else
+                {
+                    _currentMapCtl.Map.TrackingLayer.Clear();
+                    _currentMapCtl.Map.RefreshTrackingLayer();
+                }
+            }
+            _isBlink = !_isBlink;
+        }
     }
 }
