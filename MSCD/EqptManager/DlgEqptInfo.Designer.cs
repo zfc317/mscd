@@ -43,6 +43,13 @@
             this.repositoryItemHyperLinkEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemHyperLinkEdit();
             this.repositoryItemHyperLinkEdit2 = new DevExpress.XtraEditors.Repository.RepositoryItemHyperLinkEdit();
             this.tabPage_Attachment = new DevExpress.XtraTab.XtraTabPage();
+            this.btn_DeleteAttachment = new DevExpress.XtraEditors.SimpleButton();
+            this.btn_AddAttachment = new DevExpress.XtraEditors.SimpleButton();
+            this.btn_DownloadAttachment = new DevExpress.XtraEditors.SimpleButton();
+            this.gc_Attachment = new DevExpress.XtraGrid.GridControl();
+            this.gv_Attachment = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.col_AttachmentId = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.col_AttachmentName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.tabPage_Maintain = new DevExpress.XtraTab.XtraTabPage();
             this.btn_DeleteMaintain = new DevExpress.XtraEditors.SimpleButton();
             this.btn_ViewMaintain = new DevExpress.XtraEditors.SimpleButton();
@@ -57,13 +64,6 @@
             this.btn_Edit = new DevExpress.XtraEditors.SimpleButton();
             this.layoutControl_EqptInfo = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
-            this.btn_DeleteAttachment = new DevExpress.XtraEditors.SimpleButton();
-            this.btn_AddAttachment = new DevExpress.XtraEditors.SimpleButton();
-            this.btn_DownloadAttachment = new DevExpress.XtraEditors.SimpleButton();
-            this.gc_Attachment = new DevExpress.XtraGrid.GridControl();
-            this.gv_Attachment = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.col_AttachmentId = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.col_AttachmentName = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).BeginInit();
             this.panelControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabControl1)).BeginInit();
@@ -77,13 +77,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemHyperLinkEdit1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemHyperLinkEdit2)).BeginInit();
             this.tabPage_Attachment.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gc_Attachment)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gv_Attachment)).BeginInit();
             this.tabPage_Maintain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gc_Maintain)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gv_Maintain)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl_EqptInfo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gc_Attachment)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gv_Attachment)).BeginInit();
             this.SuspendLayout();
             // 
             // panelControl1
@@ -202,6 +202,7 @@
             this.gv_Image.Name = "gv_Image";
             this.gv_Image.OptionsView.ShowGroupPanel = false;
             this.gv_Image.FocusedRowChanged += new DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventHandler(this.gv_Image_FocusedRowChanged);
+            this.gv_Image.DoubleClick += new System.EventHandler(this.gv_Image_DoubleClick);
             // 
             // col_ImageId
             // 
@@ -239,6 +240,75 @@
             this.tabPage_Attachment.Name = "tabPage_Attachment";
             this.tabPage_Attachment.Size = new System.Drawing.Size(220, 360);
             this.tabPage_Attachment.Text = "附件";
+            // 
+            // btn_DeleteAttachment
+            // 
+            this.btn_DeleteAttachment.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_DeleteAttachment.Location = new System.Drawing.Point(172, 336);
+            this.btn_DeleteAttachment.Name = "btn_DeleteAttachment";
+            this.btn_DeleteAttachment.Size = new System.Drawing.Size(45, 22);
+            this.btn_DeleteAttachment.TabIndex = 16;
+            this.btn_DeleteAttachment.Text = "删除";
+            this.btn_DeleteAttachment.Click += new System.EventHandler(this.btn_DeleteAttachment_Click);
+            // 
+            // btn_AddAttachment
+            // 
+            this.btn_AddAttachment.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_AddAttachment.Location = new System.Drawing.Point(64, 336);
+            this.btn_AddAttachment.Name = "btn_AddAttachment";
+            this.btn_AddAttachment.Size = new System.Drawing.Size(48, 22);
+            this.btn_AddAttachment.TabIndex = 18;
+            this.btn_AddAttachment.Text = "添加";
+            this.btn_AddAttachment.Click += new System.EventHandler(this.btn_AddAttachment_Click);
+            // 
+            // btn_DownloadAttachment
+            // 
+            this.btn_DownloadAttachment.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_DownloadAttachment.Location = new System.Drawing.Point(118, 336);
+            this.btn_DownloadAttachment.Name = "btn_DownloadAttachment";
+            this.btn_DownloadAttachment.Size = new System.Drawing.Size(48, 22);
+            this.btn_DownloadAttachment.TabIndex = 17;
+            this.btn_DownloadAttachment.Text = "下載";
+            this.btn_DownloadAttachment.Click += new System.EventHandler(this.btn_DownloadAttachment_Click);
+            // 
+            // gc_Attachment
+            // 
+            this.gc_Attachment.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.gc_Attachment.Location = new System.Drawing.Point(1, 2);
+            this.gc_Attachment.MainView = this.gv_Attachment;
+            this.gc_Attachment.Name = "gc_Attachment";
+            this.gc_Attachment.Size = new System.Drawing.Size(218, 328);
+            this.gc_Attachment.TabIndex = 15;
+            this.gc_Attachment.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+            this.gv_Attachment});
+            // 
+            // gv_Attachment
+            // 
+            this.gv_Attachment.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
+            this.col_AttachmentId,
+            this.col_AttachmentName});
+            this.gv_Attachment.GridControl = this.gc_Attachment;
+            this.gv_Attachment.Name = "gv_Attachment";
+            this.gv_Attachment.OptionsView.ShowGroupPanel = false;
+            this.gv_Attachment.DoubleClick += new System.EventHandler(this.gv_Attachment_DoubleClick);
+            // 
+            // col_AttachmentId
+            // 
+            this.col_AttachmentId.Caption = "Id";
+            this.col_AttachmentId.FieldName = "Id";
+            this.col_AttachmentId.Name = "col_AttachmentId";
+            this.col_AttachmentId.OptionsColumn.AllowEdit = false;
+            // 
+            // col_AttachmentName
+            // 
+            this.col_AttachmentName.Caption = "名称";
+            this.col_AttachmentName.FieldName = "Name";
+            this.col_AttachmentName.Name = "col_AttachmentName";
+            this.col_AttachmentName.OptionsColumn.AllowEdit = false;
+            this.col_AttachmentName.Visible = true;
+            this.col_AttachmentName.VisibleIndex = 0;
             // 
             // tabPage_Maintain
             // 
@@ -384,74 +454,6 @@
             this.layoutControlGroup1.Text = "layoutControlGroup1";
             this.layoutControlGroup1.TextVisible = false;
             // 
-            // btn_DeleteAttachment
-            // 
-            this.btn_DeleteAttachment.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_DeleteAttachment.Location = new System.Drawing.Point(172, 336);
-            this.btn_DeleteAttachment.Name = "btn_DeleteAttachment";
-            this.btn_DeleteAttachment.Size = new System.Drawing.Size(45, 22);
-            this.btn_DeleteAttachment.TabIndex = 16;
-            this.btn_DeleteAttachment.Text = "删除";
-            this.btn_DeleteAttachment.Click += new System.EventHandler(this.btn_DeleteAttachment_Click);
-            // 
-            // btn_AddAttachment
-            // 
-            this.btn_AddAttachment.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_AddAttachment.Location = new System.Drawing.Point(64, 336);
-            this.btn_AddAttachment.Name = "btn_AddAttachment";
-            this.btn_AddAttachment.Size = new System.Drawing.Size(48, 22);
-            this.btn_AddAttachment.TabIndex = 18;
-            this.btn_AddAttachment.Text = "添加";
-            this.btn_AddAttachment.Click += new System.EventHandler(this.btn_AddAttachment_Click);
-            // 
-            // btn_DownloadAttachment
-            // 
-            this.btn_DownloadAttachment.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_DownloadAttachment.Location = new System.Drawing.Point(118, 336);
-            this.btn_DownloadAttachment.Name = "btn_DownloadAttachment";
-            this.btn_DownloadAttachment.Size = new System.Drawing.Size(48, 22);
-            this.btn_DownloadAttachment.TabIndex = 17;
-            this.btn_DownloadAttachment.Text = "下載";
-            this.btn_DownloadAttachment.Click += new System.EventHandler(this.btn_DownloadAttachment_Click);
-            // 
-            // gc_Attachment
-            // 
-            this.gc_Attachment.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.gc_Attachment.Location = new System.Drawing.Point(1, 2);
-            this.gc_Attachment.MainView = this.gv_Attachment;
-            this.gc_Attachment.Name = "gc_Attachment";
-            this.gc_Attachment.Size = new System.Drawing.Size(218, 328);
-            this.gc_Attachment.TabIndex = 15;
-            this.gc_Attachment.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
-            this.gv_Attachment});
-            // 
-            // gv_Attachment
-            // 
-            this.gv_Attachment.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
-            this.col_AttachmentId,
-            this.col_AttachmentName});
-            this.gv_Attachment.GridControl = this.gc_Attachment;
-            this.gv_Attachment.Name = "gv_Attachment";
-            this.gv_Attachment.OptionsView.ShowGroupPanel = false;
-            // 
-            // col_AttachmentId
-            // 
-            this.col_AttachmentId.Caption = "Id";
-            this.col_AttachmentId.FieldName = "Id";
-            this.col_AttachmentId.Name = "col_AttachmentId";
-            this.col_AttachmentId.OptionsColumn.AllowEdit = false;
-            // 
-            // col_AttachmentName
-            // 
-            this.col_AttachmentName.Caption = "名称";
-            this.col_AttachmentName.FieldName = "Name";
-            this.col_AttachmentName.Name = "col_AttachmentName";
-            this.col_AttachmentName.OptionsColumn.AllowEdit = false;
-            this.col_AttachmentName.Visible = true;
-            this.col_AttachmentName.VisibleIndex = 0;
-            // 
             // DlgEqptInfo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
@@ -482,13 +484,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemHyperLinkEdit1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemHyperLinkEdit2)).EndInit();
             this.tabPage_Attachment.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.gc_Attachment)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gv_Attachment)).EndInit();
             this.tabPage_Maintain.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gc_Maintain)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gv_Maintain)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl_EqptInfo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gc_Attachment)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gv_Attachment)).EndInit();
             this.ResumeLayout(false);
 
         }

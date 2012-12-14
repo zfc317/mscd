@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -8,11 +9,13 @@ using System.Windows.Forms;
 using DevExpress.Utils;
 using DevExpress.XtraEditors;
 using DevExpress.XtraLayout;
-using MSCD.BLL;
 using MSCD.Common;
 using MSCD.GIS;
+using MSCD.Model;
 using MSCD.Services;
 using SuperMap.Data;
+using EqptAttachment = MSCD.BLL.EqptAttachment;
+using EqptImage = MSCD.BLL.EqptImage;
 using EqptMaintain = MSCD.Model.EqptMaintain;
 using Padding = DevExpress.XtraLayout.Utils.Padding;
 
@@ -24,12 +27,12 @@ namespace MSCD.UI.EqptManager
         private List<Model.EqptImage> _eqptImages = new List<Model.EqptImage>();
         private List<Model.EqptAttachment> _eqptAttachments = new List<Model.EqptAttachment>(); 
         private List<EqptMaintain> _eqptMaintians = new List<EqptMaintain>(); 
-        private readonly string _layerName;
+        private readonly LayerInfo _layerInfo;
         private readonly int _smId;
-        public DlgEqptInfo(int smId, string layerName,ref DataRow row)
+        public DlgEqptInfo(int smId, LayerInfo layerInfo,ref DataRow row)
         {
             _eqptValues = row;
-            _layerName = layerName;
+            _layerInfo = layerInfo;
             _smId = smId;
             InitializeComponent();
             InitEqptInfo();
@@ -37,7 +40,7 @@ namespace MSCD.UI.EqptManager
             InitMaintainGrid();
             InitAttachmentGrid();
 
-            Text = layerName + "属性信息";
+            Text = layerInfo.LayerCaption + "属性信息";
         }
 
         public override sealed string Text
@@ -48,9 +51,8 @@ namespace MSCD.UI.EqptManager
 
         private void InitEqptInfo()
         {
-            var eqptLayer = LayerService.INSTANCE.GetStationLayerInfos().First(layerInfo => layerInfo.LayerName == _layerName);
-            if(eqptLayer==null) return;
-            var fieldInfos = eqptLayer.FieldInfos;
+            if(_layerInfo==null) return;
+            var fieldInfos = _layerInfo.FieldInfos;
             foreach (var fieldInfo in fieldInfos)
             {
                 if (fieldInfo.FieldName.ToLower()=="smid") continue;
@@ -73,7 +75,7 @@ namespace MSCD.UI.EqptManager
         private void btn_Save_Click(object sender, EventArgs e)
         {
             var stationDatasourceName = ConfigHelper.GetConfig("StationDatasourceName");
-            var datasetName = _layerName;
+            var datasetName = _layerInfo.LayerName;
             var dataset = WorkspaceService.Instance.GetDataset(stationDatasourceName, datasetName) as DatasetVector;
             if (dataset == null) return;
             var rs = dataset.Query(new[] {_smId}, CursorType.Dynamic);
@@ -155,7 +157,7 @@ namespace MSCD.UI.EqptManager
                 var eqptImageModel = new Model.EqptImage();
                 eqptImageModel.Image = imgeByte;
                 eqptImageModel.ImageName = Path.GetFileName(fileName);
-                eqptImageModel.LayerName = _layerName;
+                eqptImageModel.LayerName = _layerInfo.LayerName;
                 eqptImageModel.SmId = _smId;
                 var imageId = eqptImageBll.Add(eqptImageModel);
                 if(imageId>0)
@@ -176,7 +178,7 @@ namespace MSCD.UI.EqptManager
         {
             var eqptImageBll = new EqptImage();
             _eqptImages =
-                eqptImageBll.GetModelList(String.Format("SmId = {0} and LayerName = '{1}'", _smId, _layerName));
+                eqptImageBll.GetModelList(String.Format("SmId = {0} and LayerName = '{1}'", _smId, _layerInfo.LayerName));
             gc_Image.DataSource = _eqptImages;
         }
 
@@ -261,13 +263,13 @@ namespace MSCD.UI.EqptManager
         {
             var eqptMaintainBll = new BLL.EqptMaintain();
             _eqptMaintians =
-                eqptMaintainBll.GetModelList(String.Format("SmId = {0} and LayerName = '{1}'", _smId, _layerName));
+                eqptMaintainBll.GetModelList(String.Format("SmId = {0} and LayerName = '{1}'", _smId, _layerInfo.LayerName));
             gc_Maintain.DataSource = _eqptMaintians;
         }
 
         private void btn_AddMaintain_Click(object sender, EventArgs e)
         {
-            var dlgEqptMaintain = new DlgEqptMaintain(_layerName,_smId,null);
+            var dlgEqptMaintain = new DlgEqptMaintain(_layerInfo, _smId, null);
             if(dlgEqptMaintain.ShowDialog()==DialogResult.OK)
             {
                 InitMaintainGrid();
@@ -283,7 +285,7 @@ namespace MSCD.UI.EqptManager
             }
             var maintainId = Convert.ToInt32(gv_Maintain.GetFocusedRowCellValue("Id"));
             var eqptMaintain = _eqptMaintians.First(m => m.Id == maintainId);
-            var dlgEqptMaintain = new DlgEqptMaintain(_layerName, _smId, eqptMaintain);
+            var dlgEqptMaintain = new DlgEqptMaintain(_layerInfo, _smId, eqptMaintain);
             if (dlgEqptMaintain.ShowDialog() == DialogResult.OK)
             {
                 InitMaintainGrid();
@@ -316,7 +318,7 @@ namespace MSCD.UI.EqptManager
             if(gv_Maintain.FocusedRowHandle<0)return;
             var maintainId = Convert.ToInt32(gv_Maintain.GetFocusedRowCellValue("Id"));
             var eqptMaintain = _eqptMaintians.First(m => m.Id == maintainId);
-            var dlgEqptMaintain = new DlgEqptMaintain(_layerName, _smId, eqptMaintain);
+            var dlgEqptMaintain = new DlgEqptMaintain(_layerInfo, _smId, eqptMaintain);
             if (dlgEqptMaintain.ShowDialog() == DialogResult.OK)
             {
                 InitMaintainGrid();
@@ -326,7 +328,7 @@ namespace MSCD.UI.EqptManager
         private void InitAttachmentGrid()
         {
             var eqptAttachmentBll = new BLL.EqptAttachment();
-            _eqptAttachments = eqptAttachmentBll.GetModelListWithoutAttachment(String.Format("SmId = {0} and LayerName = '{1}'", _smId, _layerName));
+            _eqptAttachments = eqptAttachmentBll.GetModelListWithoutAttachment(String.Format("SmId = {0} and LayerName = '{1}'", _smId, _layerInfo.LayerName));
             gc_Attachment.DataSource = _eqptAttachments;
         }
 
@@ -346,7 +348,7 @@ namespace MSCD.UI.EqptManager
                         fsRead.Read(btRead, 0, fsSize);
                         fsRead.Close();
                         eqptAttachmentModel.Attachment = btRead;
-                        eqptAttachmentModel.LayerName = _layerName;
+                        eqptAttachmentModel.LayerName = _layerInfo.LayerName;
                         eqptAttachmentModel.Name = Path.GetFileName(openFileDialog.FileName);
                         eqptAttachmentModel.SmId = _smId;
                         
@@ -401,6 +403,60 @@ namespace MSCD.UI.EqptManager
                     _eqptAttachments.Remove(eqptAttachment);
                     gc_Attachment.RefreshDataSource();
                 }
+            }
+        }
+
+        private void gv_Image_DoubleClick(object sender, EventArgs e)
+        {
+            try
+            {
+                if (gv_Image.FocusedRowHandle < 0) return;
+                FileUtils.ClearDirectory(Application.StartupPath + "\\Temp");
+                var imageId = Convert.ToInt32(gv_Image.GetFocusedRowCellValue("Id"));
+                var fileName = gv_Image.GetFocusedRowCellValue("ImageName").ToString();
+
+                var eqptImageBll = new EqptImage();
+                var imageModel = eqptImageBll.GetModel(imageId);
+
+                var fs = new FileStream(Application.StartupPath + "\\Temp\\" + fileName, FileMode.OpenOrCreate);
+                var bw = new BinaryWriter(fs);
+                bw.Write(imageModel.Image, 0, imageModel.Image.Length);
+                bw.Close();
+                fs.Close();
+
+
+                Process.Start(Application.StartupPath + "\\Temp\\" + fileName);
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show("打开出错！", "提示");
+            }
+        }
+
+        private void gv_Attachment_DoubleClick(object sender, EventArgs e)
+        {
+            try
+            {
+                if (gv_Attachment.FocusedRowHandle < 0) return;
+                FileUtils.ClearDirectory(Application.StartupPath + "\\Temp");
+                var imageId = Convert.ToInt32(gv_Attachment.GetFocusedRowCellValue("Id"));
+                var fileName = gv_Attachment.GetFocusedRowCellValue("Name").ToString();
+
+                var attachementBll = new EqptAttachment();
+                var attachementModel = attachementBll.GetModel(imageId);
+
+                var fs = new FileStream(Application.StartupPath + "\\Temp\\" + fileName, FileMode.OpenOrCreate);
+                var bw = new BinaryWriter(fs);
+                bw.Write(attachementModel.Attachment, 0, attachementModel.Attachment.Length);
+                bw.Close();
+                fs.Close();
+
+
+                Process.Start(Application.StartupPath + "\\Temp\\" + fileName);
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show("打开出错！", "提示");
             }
         }
 

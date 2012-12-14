@@ -14,6 +14,7 @@ using DevExpress.XtraTreeList;
 using DevExpress.XtraTreeList.Nodes;
 using MSCD.Common;
 using MSCD.GIS;
+using MSCD.Model;
 using MSCD.Services;
 using MSCD.UI.EqptManager;
 using MSCD.UI.LayerManager;
@@ -36,13 +37,15 @@ namespace MSCD.UI
         private Recordset _blinkRs;
         private int _blinkCount;
         private bool _isBlink;
-        private readonly Dictionary<string,List<Layer>> _stationLayers=new Dictionary<string, List<Layer>>(); 
+        private readonly Dictionary<string,List<Layer>> _stationLayers=new Dictionary<string, List<Layer>>();
+        private readonly Dictionary<String, List<Layer>> _siteLayers = new Dictionary<string, List<Layer>>(); 
         public MainForm()
         {
             InitializeComponent();
             Visible = false;
             InitWorkspace();
             InitStationLayerTree();
+            InitSiteLayerTree();
             _currentMapCtl = mapCtl_Station;
         }
 
@@ -105,15 +108,11 @@ namespace MSCD.UI
                 mapCtl_Station.Map.Open(ConfigHelper.GetConfig("StationMapName"));
                 mapCtl_Site.Map.Open(ConfigHelper.GetConfig("SiteMapName"));
                 InitStationLayers(mapCtl_Station.Map);
+                InitSiteLayers(mapCtl_Site.Map);
 
                 sceneCtl_Station.Scene.Open(ConfigHelper.GetConfig("StationSceneName"));
                 var layer3D = sceneCtl_Station.Scene.Layers.Add(@".\Data\台区场景\台区场景.scv", Layer3DType.VectorFile, true, "台区场景", "") as Layer3DVectorFile;
                 layer3D.IsSelectable = false;
-                //layer3D.IsQuickRender = true;
-                //layer3D.IsAlwaysRender = false;
-                //sceneCtl_Station.Action = Action3D.Pan2;
-
-                //sceneCtl_Station.SetBounds((int)layer3D.Bounds.Left, (int)layer3D.Bounds.Bottom, (int)layer3D.Bounds.Width, (int)layer3D.Bounds.Height);
                 sceneCtl_Station.Scene.Refresh();
             }
             catch (Exception ex)
@@ -128,6 +127,7 @@ namespace MSCD.UI
             var layers = map.Layers;
             foreach (Layer layer in layers)
             {
+                layer.IsEditable = false;
                 var dtName = layer.Dataset.Name;
                 if(_stationLayers.ContainsKey(dtName))
                 {
@@ -136,6 +136,24 @@ namespace MSCD.UI
                 else
                 {
                     _stationLayers.Add(dtName, new List<Layer>() { layer });
+                }
+            }
+        }
+
+        private void InitSiteLayers(Map map)
+        {
+            var layers = map.Layers;
+            foreach (Layer layer in layers)
+            {
+                layer.IsEditable = false;
+                var dtName = layer.Dataset.Name;
+                if (_siteLayers.ContainsKey(dtName))
+                {
+                    _siteLayers[dtName].Add(layer);
+                }
+                else
+                {
+                    _siteLayers.Add(dtName, new List<Layer>() { layer });
                 }
             }
         }
@@ -183,7 +201,6 @@ namespace MSCD.UI
                         }
                         _currentMapCtl.Refresh();
                     }
-
                     break;
                 case "distance":
                     if (_currentMapCtl != null) 
@@ -208,6 +225,16 @@ namespace MSCD.UI
                 case "polygonQuery":
                     if (_currentMapCtl != null) _currentMapCtl.Action = Action.SelectRegion;
                     break;
+                case "stationAttributeQuery":
+                    xtraTabCtl_Map.SelectedTabPageIndex = 0;
+                    var dlgStationAttributeQuyer = new DlgAttributeQuery("station", this);
+                    dlgStationAttributeQuyer.ShowDialog();
+                    break;
+                case "siteAttributeQuery":
+                    xtraTabCtl_Map.SelectedTabPageIndex = 1;
+                    var dlgSiteAttributeQuyer = new DlgAttributeQuery("site", this);
+                    dlgSiteAttributeQuyer.ShowDialog();
+                    break;
             }
         }
 
@@ -215,6 +242,7 @@ namespace MSCD.UI
         {
             var layerTypes = LayerService.INSTANCE.GetStationLayerTypes();
             var layerCatalogs = LayerService.INSTANCE.GetStationLayerCatalogs();
+            var stationLayerInfos = LayerService.INSTANCE.GetStationLayerInfos();
             var layers = mapCtl_Station.Map.Layers;
             
             foreach (var layerType in layerTypes)
@@ -229,16 +257,46 @@ namespace MSCD.UI
                     {
                         if (mapCtl_Station.Map.Layers[layerName + "@" + ConfigHelper.GetConfig("StationDatasourceName")].IsVisible)
                         {
-                            SetCheckedNode(treeList_StationLayer,mapCtl_Station.Map,_stationLayers,layerTn,CheckState.Checked);
+                            SetCheckedNode(treeList_StationLayer, mapCtl_Station.Map, _stationLayers, stationLayerInfos,layerTn, CheckState.Checked);
                         }
                         else
                         {
-                            SetCheckedNode(treeList_StationLayer, mapCtl_Station.Map, _stationLayers, layerTn, CheckState.Unchecked);
+                            SetCheckedNode(treeList_StationLayer, mapCtl_Station.Map, _stationLayers,stationLayerInfos,layerTn, CheckState.Unchecked);
                         }
                     }
                 }
             }
             foreach (var layer in layers.Cast<Layer>().Where(layer => layerCatalogs.Count(layerCatalog => layerCatalog.layerName == layer.Dataset.Name)<1))
+            {
+                layer.IsVisible = false;
+            }
+        }
+
+        private void InitSiteLayerTree()
+        {
+            var siteLayerInfos = LayerService.INSTANCE.GetSiteLayerInfos();
+            var layers = mapCtl_Site.Map.Layers;
+
+            foreach (var siteLayerInfo in siteLayerInfos)
+            {
+                var layerTn =
+                    treeList_SiteLayer.AppendNode(new object[] {siteLayerInfo.LayerCaption, siteLayerInfo.LayerName},
+                                                  null);
+                var layerName = siteLayerInfo.LayerName;
+                if(_siteLayers.ContainsKey(layerName))
+                {
+                    if (mapCtl_Site.Map.Layers[layerName + "@" + ConfigHelper.GetConfig("StationDatasourceName")].IsVisible)
+                    {
+                        SetCheckedNode(treeList_SiteLayer, mapCtl_Site.Map, _siteLayers, siteLayerInfos, layerTn, CheckState.Checked);
+                    }
+                    else
+                    {
+                        SetCheckedNode(treeList_SiteLayer, mapCtl_Site.Map, _siteLayers, siteLayerInfos, layerTn, CheckState.Unchecked);
+                    }
+                }
+            }
+
+            foreach (var layer in layers.Cast<Layer>().Where(layer => siteLayerInfos.Count(layerInfo => layerInfo.LayerName == layer.Dataset.Name) < 1))
             {
                 layer.IsVisible = false;
             }
@@ -263,12 +321,29 @@ namespace MSCD.UI
             }
         }
 
+        private void treeList_SiteLayer_GetStateImage(object sender, GetStateImageEventArgs e)
+        {
+            var checkState = GetCheckState(e.Node.Tag);
+            switch (checkState)
+            {
+                case CheckState.Checked:
+                    e.NodeImageIndex = 0;
+                    break;
+                case CheckState.Indeterminate:
+                    e.NodeImageIndex = 1;
+                    break;
+                case CheckState.Unchecked:
+                    e.NodeImageIndex = 2;
+                    break;
+            }
+        }
+
         private CheckState GetCheckState(object obj)
         {
                 return obj is CheckState ? (CheckState) obj : CheckState.Unchecked;
         }
 
-        private void SetCheckedNode(TreeList treeList,Map map,IDictionary<string, List<Layer>> mapLayers ,TreeListNode node,CheckState checkState)
+        private void SetCheckedNode(TreeList treeList,Map map,IDictionary<string, List<Layer>> mapLayers ,List<LayerInfo> layerInfos,TreeListNode node,CheckState checkState)
         {
             treeList.BeginUpdate();
             node.Tag = checkState;
@@ -279,18 +354,18 @@ namespace MSCD.UI
                 foreach (var layer in layers)
                 {
                     layer.IsVisible = checkState == CheckState.Checked;
-                    var layerInfo = LayerService.INSTANCE.GetStationLayerInfos().First(l => l.LayerName == layerName);
+                    var layerInfo = layerInfos.First(l => l.LayerName == layerName);
                     layer.IsSelectable = layerInfo.Queryable;
                 }
             }
 
-            SetCheckedChildNodes(map,mapLayers,node, checkState);
-            SetCheckedParentNodes(map, mapLayers, node, checkState);
+            SetCheckedChildNodes(mapLayers,node, checkState);
+            SetCheckedParentNodes(mapLayers, node, checkState);
             treeList.EndUpdate();
             map.Refresh();
         }
 
-        private void SetCheckedChildNodes(Map map, IDictionary<string, List<Layer>> mapLayers, TreeListNode node, CheckState checkState)
+        private void SetCheckedChildNodes(IDictionary<string, List<Layer>> mapLayers, TreeListNode node, CheckState checkState)
         {
             foreach (TreeListNode childeNode in node.Nodes)
             {
@@ -309,13 +384,12 @@ namespace MSCD.UI
                         }
                     }
                 }
-                SetCheckedChildNodes(map, mapLayers, childeNode, checkState);
+                SetCheckedChildNodes(mapLayers, childeNode, checkState);
             }
             
-            map.Refresh();
         }
 
-        private void SetCheckedParentNodes(Map map, IDictionary<string, List<Layer>> mapLayers, TreeListNode node, CheckState checkState)
+        private void SetCheckedParentNodes(IDictionary<string, List<Layer>> mapLayers, TreeListNode node, CheckState checkState)
         {
             if(node.ParentNode!=null)
             {
@@ -338,7 +412,7 @@ namespace MSCD.UI
                     }
                 }
                 node.ParentNode.Tag = b ? CheckState.Indeterminate : checkState;
-                SetCheckedParentNodes(map, mapLayers, node.ParentNode, checkState);
+                SetCheckedParentNodes(mapLayers, node.ParentNode, checkState);
             }
         }
 
@@ -358,7 +432,30 @@ namespace MSCD.UI
                     {
                         checkState = CheckState.Unchecked;
                     }
-                    SetCheckedNode(treeList_StationLayer, mapCtl_Station.Map, _stationLayers, hInfo.Node, checkState);
+                    var stationLayerInfos = LayerService.INSTANCE.GetStationLayerInfos();
+                    SetCheckedNode(treeList_StationLayer, mapCtl_Station.Map, _stationLayers,stationLayerInfos, hInfo.Node, checkState);
+                }
+            }
+        }
+
+        private void treeList_SiteLayer_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                var hInfo = treeList_SiteLayer.CalcHitInfo(new Point(e.X, e.Y));
+                if (hInfo.HitInfoType == HitInfoType.StateImage)
+                {
+                    var checkState = GetCheckState(hInfo.Node.Tag);
+                    if (checkState == CheckState.Indeterminate || checkState == CheckState.Unchecked)
+                    {
+                        checkState = CheckState.Checked;
+                    }
+                    else
+                    {
+                        checkState = CheckState.Unchecked;
+                    }
+                    var siteLayerInfos = LayerService.INSTANCE.GetSiteLayerInfos();
+                    SetCheckedNode(treeList_SiteLayer, mapCtl_Site.Map, _siteLayers, siteLayerInfos, hInfo.Node, checkState);
                 }
             }
         }
@@ -382,7 +479,7 @@ namespace MSCD.UI
                         rs.Dispose();
                     }
                     var selectedRow = dt.Select(string.Format("SMID = '{0}'", smId))[0];
-                    var eqptInfo = new DlgEqptInfo(smId, layerName, ref selectedRow);
+                    var eqptInfo = new DlgEqptInfo(smId, layerInfo, ref selectedRow);
                     eqptInfo.ShowDialog();
                 }
             }
@@ -394,9 +491,22 @@ namespace MSCD.UI
             {
                 case 0:
                     _currentMapCtl = mapCtl_Station;
+                    toolBar_Map2D.Visible = true;
+                    dockPanel_LayerControl.Visible = true;
+                    treeList_StationLayer.Visible = true;
+                    treeList_SiteLayer.Visible = false;
                     break;
                 case 1:
                     _currentMapCtl = mapCtl_Site;
+                    toolBar_Map2D.Visible = true;
+                    dockPanel_LayerControl.Visible = true;
+                    treeList_StationLayer.Visible = false;
+                    treeList_SiteLayer.Visible = true;
+                    break;
+                case 2:
+                    toolBar_Map2D.Visible = false;
+                    dockPanel_LayerControl.Visible = false;
+                    dockPanel_QueryResult.Visible = false;
                     break;
             }
         }
@@ -438,39 +548,48 @@ namespace MSCD.UI
             {
                 var rs = selection.ToRecordset();
                 var datasetName = rs.Dataset.Name;
-                var datasourceName = rs.Dataset.Datasource.Alias;
                 var selectedLayer = LayerService.INSTANCE.GetStationLayerInfos().First(l => l.LayerName == datasetName);
                 var dt = GISUtility.RecordsetToDataTable(rs, selectedLayer);
                 rs.Close();
                 rs.Dispose();
-                
-                var gc = new GridControl();
-                var gv = new GridView();
-                gc.Dock=DockStyle.Fill;
-                gc.MainView = gv;
-                gv.OptionsView.ShowGroupPanel = false;
-                gv.OptionsBehavior.Editable = false;
-                gc.ViewCollection.Add(gv);
-                gv.GridControl = gc;
-                gc.DataSource = dt;
-                gv.RowClick += new RowClickEventHandler(gv_RowClick);
-                gv.DoubleClick += new EventHandler(gv_DoubleClick);
-                gv.Tag = new[] {datasetName, datasourceName};
-            
-                var tab = new XtraTabPage() {Text = selectedLayer.LayerCaption};
-                tab.Controls.Add(gc);
-                xtraTabCtl_QueryResult.TabPages.Add(tab);
+
+                CreateQueryResultGrid(dt, selectedLayer);
             }
+        }
+
+        public void ShowQueryResult()
+        {
+            dockPanel_QueryResult.Visible = true;
+            xtraTabCtl_QueryResult.TabPages.Clear();
+        }
+
+        public void CreateQueryResultGrid(DataTable dt,LayerInfo layerInfo)
+        {
+            var gc = new GridControl();
+            var gv = new GridView();
+            gc.Dock = DockStyle.Fill;
+            gc.MainView = gv;
+            gv.OptionsView.ShowGroupPanel = false;
+            gv.OptionsBehavior.Editable = false;
+            gc.ViewCollection.Add(gv);
+            gv.GridControl = gc;
+            gc.DataSource = dt;
+            gv.RowClick += new RowClickEventHandler(gv_RowClick);
+            gv.DoubleClick += new EventHandler(gv_DoubleClick);
+            gv.Tag = layerInfo;
+
+            var tab = new XtraTabPage() { Text = layerInfo.LayerCaption };
+            tab.Controls.Add(gc);
+            xtraTabCtl_QueryResult.TabPages.Add(tab);
         }
 
         void gv_DoubleClick(object sender, EventArgs e)
         {
             var gv = sender as GridView;
-            var dtAndDs = gv.Tag as String[];
             if(gv.FocusedRowHandle<0) return;
             var smId = Convert.ToInt32(gv.GetFocusedRowCellValue("SMID"));
             var selectedRow = (gv.GridControl.DataSource as DataTable).Select(string.Format("SMID = '{0}'", smId))[0];
-            var eqptInfo = new DlgEqptInfo(smId, dtAndDs[0],ref selectedRow);
+            var eqptInfo = new DlgEqptInfo(smId, (LayerInfo) gv.Tag, ref selectedRow);
             eqptInfo.ShowDialog();
             gv.GridControl.RefreshDataSource();
         }
@@ -478,10 +597,10 @@ namespace MSCD.UI
         void gv_RowClick(object sender, RowClickEventArgs e)
         {
             var gv = sender as GridView;
-            var dtAndDs = gv.Tag as String[];
             var rowHandle = e.RowHandle;
             var smId = Convert.ToInt32(gv.GetRowCellValue(rowHandle, "SMID"));
-            var dataset = WorkspaceService.Instance.GetDataset(dtAndDs[1], dtAndDs[0]) as DatasetVector;
+            var layerInfo = gv.Tag as LayerInfo;
+            var dataset = WorkspaceService.Instance.GetDataset(ConfigHelper.GetConfig("StationDatasourceName"), layerInfo.LayerName) as DatasetVector;
             var rs = dataset.Query(new[] {smId}, CursorType.Static);
             var centerPt = rs.GetGeometry().InnerPoint;
             _currentMapCtl.Map.Center = centerPt;
@@ -538,5 +657,52 @@ namespace MSCD.UI
             }
             _isBlink = !_isBlink;
         }
+
+        private void mapCtl_Site_DoubleClick(object sender, EventArgs e)
+        {
+            var selections = mapCtl_Site.Map.FindSelection(true);
+            if (selections.Count() > 0)
+            {
+                var rs = selections[0].ToRecordset();
+                if (rs.RecordCount > 0)
+                {
+                    rs.MoveFirst();
+                    var smId = rs.GetID();
+                    var layerName = rs.Dataset.Name;
+                    var layerInfo = LayerService.INSTANCE.GetSiteLayerInfos().First(l => l.LayerName == layerName);
+                    var dt = GISUtility.RecordsetToDataTable(rs, layerInfo);
+                    if (!rs.IsClosed)
+                    {
+                        rs.Close();
+                        rs.Dispose();
+                    }
+                    var selectedRow = dt.Select(string.Format("SMID = '{0}'", smId))[0];
+                    var eqptInfo = new DlgEqptInfo(smId, layerInfo, ref selectedRow);
+                    eqptInfo.ShowDialog();
+                }
+            }
+        }
+
+        private void mapCtl_Site_GeometrySelectChanged(object sender, GeometrySelectChangedEventArgs e)
+        {
+            xtraTabCtl_QueryResult.TabPages.Clear();
+            var selections = mapCtl_Site.Map.FindSelection(true);
+            dockPanel_QueryResult.Visible = selections.Length > 0;
+            foreach (var selection in selections)
+            {
+                var rs = selection.ToRecordset();
+                var datasetName = rs.Dataset.Name;
+                var selectedLayer = LayerService.INSTANCE.GetSiteLayerInfos().First(l => l.LayerName == datasetName);
+                var dt = GISUtility.RecordsetToDataTable(rs, selectedLayer);
+                rs.Close();
+                rs.Dispose();
+
+                CreateQueryResultGrid(dt, selectedLayer);
+            }
+        }
+
+        
+
+        
     }
 }

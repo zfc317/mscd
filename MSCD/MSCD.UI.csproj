@@ -78,6 +78,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EqptManager\DlgAttributeQuery.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EqptManager\DlgAttributeQuery.Designer.cs">
+      <DependentUpon>DlgAttributeQuery.cs</DependentUpon>
+    </Compile>
     <Compile Include="EqptManager\DlgEqptImage.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -123,6 +129,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="EqptManager\DlgAttributeQuery.resx">
+      <DependentUpon>DlgAttributeQuery.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="EqptManager\DlgEqptImage.resx">
       <DependentUpon>DlgEqptImage.cs</DependentUpon>
     </EmbeddedResource>

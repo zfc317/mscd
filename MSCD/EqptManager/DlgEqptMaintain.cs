@@ -14,13 +14,13 @@ namespace MSCD.UI.EqptManager
     public partial class DlgEqptMaintain : DevExpress.XtraEditors.XtraForm
     {
         private EqptMaintain _eqptMaintain;
-        private readonly string _layerName;
+        private readonly LayerInfo _layerInfo;
         private readonly int _smId;
-        public DlgEqptMaintain(string layerName,int smId,EqptMaintain eqptMaintain)
+        public DlgEqptMaintain(LayerInfo layerInfo,int smId,EqptMaintain eqptMaintain)
         {
             InitializeComponent();
             _eqptMaintain = eqptMaintain;
-            _layerName = layerName;
+            _layerInfo = layerInfo;
             _smId = smId;
             InitForm();
         }
@@ -104,7 +104,7 @@ namespace MSCD.UI.EqptManager
                                         Checker = txt_Checker.Text,
                                         Department = txt_Department.Text,
                                         EqptName = txt_EqptName.Text,
-                                        LayerName = _layerName,
+                                        LayerName = _layerInfo.LayerName,
                                         MaintainDate = DateEdit_MaintianDate.DateTime,
                                         MaintainType = combox_MaintianType.Text == "周期性维护" ? 0 : 1,
                                         Maintainer = txt_Maintainer.Text,

@@ -9,11 +9,13 @@ namespace MSCD.Services
     {
         public static readonly LayerService INSTANCE=new LayerService();
         private readonly List<LayerInfo> _StationLayerInfos;
+        private readonly List<LayerInfo> _SiteLayerInfos; 
         private readonly List<LayerType> _StationLayerType;
         private readonly List<LayerCatalog> _StationLayerCatalogs; 
         private LayerService()
         {
             _StationLayerInfos = GetStationLayers();
+            _SiteLayerInfos = GetSisteLayers();
             _StationLayerType = GetStationLayerType();
             _StationLayerCatalogs = GetStationLayerCatalog();
         }
@@ -24,6 +26,13 @@ namespace MSCD.Services
             var layerInfoConfigModel = configBLLL.GetModel("stationLayer");
             return ParaseLayerInfo(layerInfoConfigModel.info);
         }
+
+        private List<LayerInfo> GetSisteLayers()
+        {
+            var configBll = new BLL.Config();
+            var layerInfoConfigModel = configBll.GetModel("siteLayer");
+            return ParaseLayerInfo(layerInfoConfigModel.info);
+        } 
 
         private List<LayerType> GetStationLayerType()
         {
@@ -37,7 +46,7 @@ namespace MSCD.Services
             return layerCatalogBll.GetModelList("");
         }
 
-        private static List<LayerInfo> ParaseLayerInfo(string layerInfoXml)
+        private  List<LayerInfo> ParaseLayerInfo(string layerInfoXml)
         {
             var layerInfos = new List<LayerInfo>();
             var xDoc = XDocument.Parse(layerInfoXml);
@@ -71,6 +80,11 @@ namespace MSCD.Services
         public List<LayerInfo> GetStationLayerInfos()
         {
             return _StationLayerInfos;
+        } 
+
+        public List<LayerInfo> GetSiteLayerInfos()
+        {
+            return _SiteLayerInfos;
         } 
 
         public List<LayerType> GetStationLayerTypes()

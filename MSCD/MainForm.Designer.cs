@@ -32,7 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.defaultLookAndFeel1 = new DevExpress.LookAndFeel.DefaultLookAndFeel(this.components);
             this.barMgr_Main = new DevExpress.XtraBars.BarManager(this.components);
-            this.bar1 = new DevExpress.XtraBars.Bar();
+            this.toolBar_Map2D = new DevExpress.XtraBars.Bar();
             this.barButtonItem5 = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem6 = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
@@ -43,17 +43,22 @@
             this.barSubItem3 = new DevExpress.XtraBars.BarSubItem();
             this.barButtonItem9 = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem10 = new DevExpress.XtraBars.BarButtonItem();
+            this.barSubItem7 = new DevExpress.XtraBars.BarSubItem();
+            this.barButtonItem15 = new DevExpress.XtraBars.BarButtonItem();
+            this.barButtonItem16 = new DevExpress.XtraBars.BarButtonItem();
             this.barSubItem4 = new DevExpress.XtraBars.BarSubItem();
             this.barButtonItem12 = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem13 = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem14 = new DevExpress.XtraBars.BarButtonItem();
             this.MainMenu = new DevExpress.XtraBars.Bar();
-            this.barSubItem1 = new DevExpress.XtraBars.BarSubItem();
-            this.barCheckItem_LayerControl = new DevExpress.XtraBars.BarCheckItem();
-            this.barCheckItem_QueryResult = new DevExpress.XtraBars.BarCheckItem();
+            this.barSubItem5 = new DevExpress.XtraBars.BarSubItem();
+            this.barSubItem6 = new DevExpress.XtraBars.BarSubItem();
             this.barSubItem2 = new DevExpress.XtraBars.BarSubItem();
             this.barButtonItem3 = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem4 = new DevExpress.XtraBars.BarButtonItem();
+            this.barSubItem1 = new DevExpress.XtraBars.BarSubItem();
+            this.barCheckItem_LayerControl = new DevExpress.XtraBars.BarCheckItem();
+            this.barCheckItem_QueryResult = new DevExpress.XtraBars.BarCheckItem();
             this.bar3 = new DevExpress.XtraBars.Bar();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
@@ -65,11 +70,14 @@
             this.xtraTabCtl_QueryResult = new DevExpress.XtraTab.XtraTabControl();
             this.dockPanel_LayerControl = new DevExpress.XtraBars.Docking.DockPanel();
             this.dockPanel1_Container = new DevExpress.XtraBars.Docking.ControlContainer();
+            this.treeList_SiteLayer = new DevExpress.XtraTreeList.TreeList();
+            this.treeSite_LayerCaption = new DevExpress.XtraTreeList.Columns.TreeListColumn();
+            this.treeSite_LayerName = new DevExpress.XtraTreeList.Columns.TreeListColumn();
+            this.imgColl_16 = new DevExpress.Utils.ImageCollection(this.components);
             this.treeList_StationLayer = new DevExpress.XtraTreeList.TreeList();
             this.treeCol_Caption = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.treeCol_Name = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.treeCol_Type = new DevExpress.XtraTreeList.Columns.TreeListColumn();
-            this.imgColl_16 = new DevExpress.Utils.ImageCollection(this.components);
             this.xtraTabCtl_Map = new DevExpress.XtraTab.XtraTabControl();
             this.tabPage_StationMap = new DevExpress.XtraTab.XtraTabPage();
             this.mapCtl_Station = new SuperMap.UI.MapControl();
@@ -87,8 +95,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabCtl_QueryResult)).BeginInit();
             this.dockPanel_LayerControl.SuspendLayout();
             this.dockPanel1_Container.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.treeList_StationLayer)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.treeList_SiteLayer)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imgColl_16)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.treeList_StationLayer)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabCtl_Map)).BeginInit();
             this.xtraTabCtl_Map.SuspendLayout();
             this.tabPage_StationMap.SuspendLayout();
@@ -103,7 +112,7 @@
             // barMgr_Main
             // 
             this.barMgr_Main.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
-            this.bar1,
+            this.toolBar_Map2D,
             this.MainMenu,
             this.bar3});
             this.barMgr_Main.DockControls.Add(this.barDockControlTop);
@@ -132,19 +141,24 @@
             this.barSubItem4,
             this.barButtonItem12,
             this.barButtonItem13,
-            this.barButtonItem14});
+            this.barButtonItem14,
+            this.barSubItem5,
+            this.barSubItem6,
+            this.barButtonItem15,
+            this.barSubItem7,
+            this.barButtonItem16});
             this.barMgr_Main.MainMenu = this.MainMenu;
-            this.barMgr_Main.MaxItemId = 21;
+            this.barMgr_Main.MaxItemId = 26;
             this.barMgr_Main.StatusBar = this.bar3;
             this.barMgr_Main.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barMgr_Main_ItemClick);
             // 
-            // bar1
+            // toolBar_Map2D
             // 
-            this.bar1.BarName = "Tools";
-            this.bar1.DockCol = 0;
-            this.bar1.DockRow = 1;
-            this.bar1.DockStyle = DevExpress.XtraBars.BarDockStyle.Top;
-            this.bar1.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
+            this.toolBar_Map2D.BarName = "Tools";
+            this.toolBar_Map2D.DockCol = 0;
+            this.toolBar_Map2D.DockRow = 1;
+            this.toolBar_Map2D.DockStyle = DevExpress.XtraBars.BarDockStyle.Top;
+            this.toolBar_Map2D.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
             new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItem5),
             new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItem6),
             new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItem1),
@@ -153,8 +167,9 @@
             new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItem8),
             new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItem11),
             new DevExpress.XtraBars.LinkPersistInfo(this.barSubItem3, true),
+            new DevExpress.XtraBars.LinkPersistInfo(this.barSubItem7),
             new DevExpress.XtraBars.LinkPersistInfo(this.barSubItem4)});
-            this.bar1.Text = " 工具条";
+            this.toolBar_Map2D.Text = " 工具条";
             // 
             // barButtonItem5
             // 
@@ -228,6 +243,29 @@
             this.barButtonItem10.Name = "barButtonItem10";
             this.barButtonItem10.Tag = "area";
             // 
+            // barSubItem7
+            // 
+            this.barSubItem7.Caption = "属性查询";
+            this.barSubItem7.Id = 24;
+            this.barSubItem7.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
+            new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItem15),
+            new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItem16)});
+            this.barSubItem7.Name = "barSubItem7";
+            // 
+            // barButtonItem15
+            // 
+            this.barButtonItem15.Caption = "台区地图属性查询";
+            this.barButtonItem15.Id = 23;
+            this.barButtonItem15.Name = "barButtonItem15";
+            this.barButtonItem15.Tag = "stationAttributeQuery";
+            // 
+            // barButtonItem16
+            // 
+            this.barButtonItem16.Caption = "站点地图属性查询";
+            this.barButtonItem16.Id = 25;
+            this.barButtonItem16.Name = "barButtonItem16";
+            this.barButtonItem16.Tag = "siteAttributeQuery";
+            // 
             // barSubItem4
             // 
             this.barSubItem4.Caption = "空间查询";
@@ -266,11 +304,59 @@
             this.MainMenu.DockRow = 0;
             this.MainMenu.DockStyle = DevExpress.XtraBars.BarDockStyle.Top;
             this.MainMenu.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
-            new DevExpress.XtraBars.LinkPersistInfo(this.barSubItem1),
-            new DevExpress.XtraBars.LinkPersistInfo(this.barSubItem2)});
+            new DevExpress.XtraBars.LinkPersistInfo(this.barSubItem5),
+            new DevExpress.XtraBars.LinkPersistInfo(this.barSubItem6),
+            new DevExpress.XtraBars.LinkPersistInfo(this.barSubItem2),
+            new DevExpress.XtraBars.LinkPersistInfo(this.barSubItem1)});
             this.MainMenu.OptionsBar.MultiLine = true;
             this.MainMenu.OptionsBar.UseWholeRow = true;
             this.MainMenu.Text = "菜单栏";
+            // 
+            // barSubItem5
+            // 
+            this.barSubItem5.Caption = "地图操作";
+            this.barSubItem5.Id = 21;
+            this.barSubItem5.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
+            new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItem5),
+            new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItem6),
+            new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItem1),
+            new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItem2),
+            new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItem7),
+            new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItem8),
+            new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItem11),
+            new DevExpress.XtraBars.LinkPersistInfo(this.barSubItem3, true)});
+            this.barSubItem5.Name = "barSubItem5";
+            // 
+            // barSubItem6
+            // 
+            this.barSubItem6.Caption = "数据查询";
+            this.barSubItem6.Id = 22;
+            this.barSubItem6.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
+            new DevExpress.XtraBars.LinkPersistInfo(this.barSubItem4)});
+            this.barSubItem6.Name = "barSubItem6";
+            // 
+            // barSubItem2
+            // 
+            this.barSubItem2.Caption = "系统管理";
+            this.barSubItem2.Id = 5;
+            this.barSubItem2.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
+            new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItem3),
+            new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItem4)});
+            this.barSubItem2.Name = "barSubItem2";
+            // 
+            // barButtonItem3
+            // 
+            this.barButtonItem3.Caption = "图层类型";
+            this.barButtonItem3.Id = 6;
+            this.barButtonItem3.Name = "barButtonItem3";
+            this.barButtonItem3.Tag = "layertype";
+            // 
+            // barButtonItem4
+            // 
+            this.barButtonItem4.Caption = "图层分类";
+            this.barButtonItem4.Id = 7;
+            this.barButtonItem4.Name = "barButtonItem4";
+            this.barButtonItem4.Tag = "layercatalog";
             // 
             // barSubItem1
             // 
@@ -295,29 +381,6 @@
             this.barCheckItem_QueryResult.Id = 2;
             this.barCheckItem_QueryResult.Name = "barCheckItem_QueryResult";
             this.barCheckItem_QueryResult.CheckedChanged += new DevExpress.XtraBars.ItemClickEventHandler(this.barCheckItem_QueryResult_CheckedChanged);
-            // 
-            // barSubItem2
-            // 
-            this.barSubItem2.Caption = "系统管理";
-            this.barSubItem2.Id = 5;
-            this.barSubItem2.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
-            new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItem3),
-            new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItem4)});
-            this.barSubItem2.Name = "barSubItem2";
-            // 
-            // barButtonItem3
-            // 
-            this.barButtonItem3.Caption = "图层类型";
-            this.barButtonItem3.Id = 6;
-            this.barButtonItem3.Name = "barButtonItem3";
-            this.barButtonItem3.Tag = "layertype";
-            // 
-            // barButtonItem4
-            // 
-            this.barButtonItem4.Caption = "图层分类";
-            this.barButtonItem4.Id = 7;
-            this.barButtonItem4.Name = "barButtonItem4";
-            this.barButtonItem4.Tag = "layercatalog";
             // 
             // bar3
             // 
@@ -420,11 +483,54 @@
             // 
             // dockPanel1_Container
             // 
+            this.dockPanel1_Container.Controls.Add(this.treeList_SiteLayer);
             this.dockPanel1_Container.Controls.Add(this.treeList_StationLayer);
             this.dockPanel1_Container.Location = new System.Drawing.Point(4, 25);
             this.dockPanel1_Container.Name = "dockPanel1_Container";
             this.dockPanel1_Container.Size = new System.Drawing.Size(192, 356);
             this.dockPanel1_Container.TabIndex = 0;
+            // 
+            // treeList_SiteLayer
+            // 
+            this.treeList_SiteLayer.Columns.AddRange(new DevExpress.XtraTreeList.Columns.TreeListColumn[] {
+            this.treeSite_LayerCaption,
+            this.treeSite_LayerName});
+            this.treeList_SiteLayer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeList_SiteLayer.Location = new System.Drawing.Point(0, 0);
+            this.treeList_SiteLayer.Name = "treeList_SiteLayer";
+            this.treeList_SiteLayer.OptionsView.ShowColumns = false;
+            this.treeList_SiteLayer.OptionsView.ShowIndicator = false;
+            this.treeList_SiteLayer.Size = new System.Drawing.Size(192, 356);
+            this.treeList_SiteLayer.StateImageList = this.imgColl_16;
+            this.treeList_SiteLayer.TabIndex = 1;
+            this.treeList_SiteLayer.Visible = false;
+            this.treeList_SiteLayer.GetStateImage += new DevExpress.XtraTreeList.GetStateImageEventHandler(this.treeList_SiteLayer_GetStateImage);
+            this.treeList_SiteLayer.MouseDown += new System.Windows.Forms.MouseEventHandler(this.treeList_SiteLayer_MouseDown);
+            // 
+            // treeSite_LayerCaption
+            // 
+            this.treeSite_LayerCaption.Caption = "标题";
+            this.treeSite_LayerCaption.FieldName = "Caption";
+            this.treeSite_LayerCaption.MinWidth = 33;
+            this.treeSite_LayerCaption.Name = "treeSite_LayerCaption";
+            this.treeSite_LayerCaption.OptionsColumn.AllowEdit = false;
+            this.treeSite_LayerCaption.Visible = true;
+            this.treeSite_LayerCaption.VisibleIndex = 0;
+            // 
+            // treeSite_LayerName
+            // 
+            this.treeSite_LayerName.Caption = "名称";
+            this.treeSite_LayerName.FieldName = "Name";
+            this.treeSite_LayerName.Name = "treeSite_LayerName";
+            this.treeSite_LayerName.OptionsColumn.AllowEdit = false;
+            this.treeSite_LayerName.Width = 87;
+            // 
+            // imgColl_16
+            // 
+            this.imgColl_16.ImageStream = ((DevExpress.Utils.ImageCollectionStreamer)(resources.GetObject("imgColl_16.ImageStream")));
+            this.imgColl_16.Images.SetKeyName(0, "checkbox-checked.png");
+            this.imgColl_16.Images.SetKeyName(1, "checkbox-partial.png");
+            this.imgColl_16.Images.SetKeyName(2, "checkbox-unchecked.png");
             // 
             // treeList_StationLayer
             // 
@@ -468,13 +574,6 @@
             this.treeCol_Type.Name = "treeCol_Type";
             this.treeCol_Type.OptionsColumn.AllowEdit = false;
             this.treeCol_Type.Width = 87;
-            // 
-            // imgColl_16
-            // 
-            this.imgColl_16.ImageStream = ((DevExpress.Utils.ImageCollectionStreamer)(resources.GetObject("imgColl_16.ImageStream")));
-            this.imgColl_16.Images.SetKeyName(0, "checkbox-checked.png");
-            this.imgColl_16.Images.SetKeyName(1, "checkbox-partial.png");
-            this.imgColl_16.Images.SetKeyName(2, "checkbox-unchecked.png");
             // 
             // xtraTabCtl_Map
             // 
@@ -553,6 +652,8 @@
             this.mapCtl_Site.Size = new System.Drawing.Size(703, 356);
             this.mapCtl_Site.TabIndex = 0;
             this.mapCtl_Site.TrackMode = SuperMap.UI.TrackMode.Edit;
+            this.mapCtl_Site.GeometrySelectChanged += new SuperMap.UI.GeometrySelectChangedEventHandler(this.mapCtl_Site_GeometrySelectChanged);
+            this.mapCtl_Site.DoubleClick += new System.EventHandler(this.mapCtl_Site_DoubleClick);
             this.mapCtl_Site.KeyDown += new System.Windows.Forms.KeyEventHandler(this.mapCtl_Site_KeyDown);
             // 
             // tabPage_StationScene
@@ -625,8 +726,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabCtl_QueryResult)).EndInit();
             this.dockPanel_LayerControl.ResumeLayout(false);
             this.dockPanel1_Container.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.treeList_StationLayer)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.treeList_SiteLayer)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imgColl_16)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.treeList_StationLayer)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabCtl_Map)).EndInit();
             this.xtraTabCtl_Map.ResumeLayout(false);
             this.tabPage_StationMap.ResumeLayout(false);
@@ -640,7 +742,7 @@
 
         private DevExpress.LookAndFeel.DefaultLookAndFeel defaultLookAndFeel1;
         private DevExpress.XtraBars.BarManager barMgr_Main;
-        private DevExpress.XtraBars.Bar bar1;
+        private DevExpress.XtraBars.Bar toolBar_Map2D;
         private DevExpress.XtraBars.Bar MainMenu;
         private DevExpress.XtraBars.Bar bar3;
         private DevExpress.XtraBars.BarDockControl barDockControlTop;
@@ -688,5 +790,13 @@
         private DevExpress.XtraBars.BarButtonItem barButtonItem14;
         private DevExpress.XtraTab.XtraTabControl xtraTabCtl_QueryResult;
         private System.Windows.Forms.Timer timer_Blink;
+        private DevExpress.XtraBars.BarSubItem barSubItem5;
+        private DevExpress.XtraBars.BarButtonItem barButtonItem15;
+        private DevExpress.XtraBars.BarSubItem barSubItem6;
+        private DevExpress.XtraTreeList.TreeList treeList_SiteLayer;
+        private DevExpress.XtraTreeList.Columns.TreeListColumn treeSite_LayerCaption;
+        private DevExpress.XtraTreeList.Columns.TreeListColumn treeSite_LayerName;
+        private DevExpress.XtraBars.BarSubItem barSubItem7;
+        private DevExpress.XtraBars.BarButtonItem barButtonItem16;
     }
 }
