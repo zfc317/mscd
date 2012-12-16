@@ -63,13 +63,13 @@ namespace MSCD.GIS
             ConfigHelper.SetConfig("WorkspaceUser", _user);
             ConfigHelper.SetConfig("WorkspacePassword", _password);
 
-            XtraMessageBox.Show("设置参数完成，需要重启软件！");
+            XtraMessageBox.Show("设置参数完成，需要重新打开软件启用新设置！");
             Application.Restart();
         }
 
         private void btn_Cancel_Click(object sender, EventArgs e)
         {
-            Application.ExitThread();
+            this.Close();
         }
     }
 }

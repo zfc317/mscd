@@ -16,7 +16,7 @@ namespace MSCD.UI
             System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo("zh-CN");
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+            Application.Run(new MainForm(){Visible=false});
         }
     }
 }

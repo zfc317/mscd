@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading;
 using System.Drawing;
@@ -9,6 +10,7 @@ using DevExpress.Utils;
 using DevExpress.XtraEditors;
 using DevExpress.XtraGrid;
 using DevExpress.XtraGrid.Views.Grid;
+using DevExpress.XtraSplashScreen;
 using DevExpress.XtraTab;
 using DevExpress.XtraTreeList;
 using DevExpress.XtraTreeList.Nodes;
@@ -42,11 +44,7 @@ namespace MSCD.UI
         public MainForm()
         {
             InitializeComponent();
-            Visible = false;
-            InitWorkspace();
-            InitStationLayerTree();
-            InitSiteLayerTree();
-            _currentMapCtl = mapCtl_Station;
+            
         }
 
         #region 视图控制
@@ -71,31 +69,119 @@ namespace MSCD.UI
         }
         #endregion
 
+        protected override void OnLoad(EventArgs e)
+        {
+            this.Visible = false;
+            this.Hide();
+            TestDatabaseConnect();
+            if(!this.IsDisposed)
+            {
+                this.Visible = true;
+                this.Show();
+                InitMap();
+                InitStationLayerTree();
+                InitSiteLayerTree();
+                _currentMapCtl = mapCtl_Station;
+            }
+            
+        }
+
+        private void TestDatabaseConnect()
+        {
+            SplashScreenManager.ShowForm(typeof (MyWaitForm), false, true);
+            SplashScreenManager.Default.SetWaitFormCaption("系统初始化");
+            SplashScreenManager.Default.SetWaitFormDescription("正在测试数据库连接,请稍候...");
+            var connectionStr = ConfigHelper.GetConfig("ConnectionString");
+            SqlConnection sqlConnection = null;
+            try
+            {
+                sqlConnection = new SqlConnection(connectionStr);
+                sqlConnection.Open();
+            }
+            catch (Exception ex)
+            {
+            }
+            finally
+            {
+                SplashScreenManager.CloseForm();
+                if (sqlConnection != null && sqlConnection.State == ConnectionState.Open)
+                {
+                    sqlConnection.Close();
+                    sqlConnection.Dispose();
+                    InitWorkspace();
+                }
+                else
+                {
+                    var dlgConfigDatabase = new DlgConfigDatabase();
+                    dlgConfigDatabase.ShowDialog();
+                    this.Close();
+                }
+            }
+        }
+
         /// <summary>
         /// 初始化工作空间
         /// </summary>
         private void InitWorkspace()
         {
-            var openWorkspaceThread = new Thread((ThreadStart)delegate
-                                                     {
-                                                         _waitForm = new WaitDialogForm("正在加载工作空间,请稍候...", "加载工作空间");
-                                                         Application.Run(_waitForm);
-                                                     } ) {IsBackground = true};
-            openWorkspaceThread.Start();
-            _workspace = WorkspaceService.Instance.GetWorkspace();
+            SplashScreenManager.ShowForm(typeof(MyWaitForm), false, true);
+            SplashScreenManager.Default.SetWaitFormCaption("系统初始化");
+            SplashScreenManager.Default.SetWaitFormDescription("正在初始化工作空间,请稍候...");
 
-            if (openWorkspaceThread.IsAlive)
+            _workspace = new Workspace();
+            var workspaceConnectionInfo = new WorkspaceConnectionInfo
             {
-                openWorkspaceThread.Abort();
+                Type = WorkspaceType.SQL,
+                Driver = ConfigHelper.GetConfig("WorkspaceDriver"),
+                Server = ConfigHelper.GetConfig("WorkspaceServer"),
+                Database = ConfigHelper.GetConfig("WorkspaceDatabase"),
+                Name = ConfigHelper.GetConfig("WorkspaceName"),
+                User = ConfigHelper.GetConfig("WorkspaceUser"),
+                Password = ConfigHelper.GetConfig("WorkspacePassword")
+            };
+            var workspaceOpened = _workspace.Open(workspaceConnectionInfo);
+            SplashScreenManager.CloseForm();
+            if (workspaceOpened)
+            {
+                var datasoureName = ConfigHelper.GetConfig("StationDatasourceName");
+                if(_workspace.Datasources.Contains(datasoureName))
+                {
+                    var datasource = _workspace.Datasources[datasoureName];
+                    if (!datasource.IsConnected)
+                    {
+                        _workspace.Datasources.Close(datasoureName);
+                        _workspace.Datasources.Open(CreateDatasourceConnectionInfo(datasoureName));
+                        _workspace.Save();
+                    }
+                }
+                else
+                {
+                    var datasource = _workspace.Datasources.Open(CreateDatasourceConnectionInfo(datasoureName));
+                    _workspace.Save();
+                }
             }
-
-            if(_workspace==null)
+            else
             {
-                var dlgConfigWorkspace=new DlgConfigWorkspace();
+                var dlgConfigWorkspace = new DlgConfigWorkspace();
                 dlgConfigWorkspace.ShowDialog();
+                this.Close();
             }
-            InitMap();
-            Visible = true;
+            
+        }
+
+        private DatasourceConnectionInfo CreateDatasourceConnectionInfo(string datasoureName)
+        {
+            var datasourceConnection = new DatasourceConnectionInfo()
+            {
+                EngineType = EngineType.SQLPlus,
+                Driver = ConfigHelper.GetConfig("WorkspaceDriver"),
+                Server = ConfigHelper.GetConfig("WorkspaceServer"),
+                Database = ConfigHelper.GetConfig("WorkspaceDatabase"),
+                User = ConfigHelper.GetConfig("WorkspaceUser"),
+                Password = ConfigHelper.GetConfig("WorkspacePassword"),
+                Alias = datasoureName
+            };
+            return datasourceConnection;
         }
 
         private void InitMap()
@@ -700,6 +786,8 @@ namespace MSCD.UI
                 CreateQueryResultGrid(dt, selectedLayer);
             }
         }
+
+        
 
         
 
