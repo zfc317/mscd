@@ -96,6 +96,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DlgLoginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DlgLoginForm.Designer.cs">
+      <DependentUpon>DlgLoginForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="EqptManager\DlgAttributeQuery.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -119,6 +125,12 @@
     </Compile>
     <Compile Include="EqptManager\DlgEqptMaintain.Designer.cs">
       <DependentUpon>DlgEqptMaintain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EqptManager\DlgMaintainQuery.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EqptManager\DlgMaintainQuery.Designer.cs">
+      <DependentUpon>DlgMaintainQuery.cs</DependentUpon>
     </Compile>
     <Compile Include="HotKey.cs" />
     <Compile Include="LayerManager\DlgAddLayerType.cs">
@@ -151,6 +163,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="DlgLoginForm.resx">
+      <DependentUpon>DlgLoginForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="EqptManager\DlgAttributeQuery.resx">
       <DependentUpon>DlgAttributeQuery.cs</DependentUpon>
     </EmbeddedResource>
@@ -162,6 +177,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="EqptManager\DlgEqptMaintain.resx">
       <DependentUpon>DlgEqptMaintain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EqptManager\DlgMaintainQuery.resx">
+      <DependentUpon>DlgMaintainQuery.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LayerManager\DlgAddLayerType.resx">
       <DependentUpon>DlgAddLayerType.cs</DependentUpon>
@@ -224,6 +242,9 @@
       <Project>{B52AF494-A315-4885-B4EC-553639CBBE34}</Project>
       <Name>MSCD.Services</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="SystemManager\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

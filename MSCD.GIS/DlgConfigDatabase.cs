@@ -69,7 +69,7 @@ namespace MSCD.GIS
 
         private void btn_Cancel_Click(object sender, EventArgs e)
         {
-            this.Close();
+            DialogResult=DialogResult.Cancel;
         }
     }
 }

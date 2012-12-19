@@ -47,6 +47,7 @@
     <Compile Include="ILayerCatalog.cs" />
     <Compile Include="ILayerType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="IUser.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MSCD.Model\MSCD.Model.csproj">

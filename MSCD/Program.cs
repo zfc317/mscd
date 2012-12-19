@@ -16,7 +16,15 @@ namespace MSCD.UI
             System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo("zh-CN");
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+            var loginForm = new DlgLoginForm();
+            var loginResult = loginForm.ShowDialog();
+            if(!loginForm.IsDisposed)
+            {
+                if (loginResult == DialogResult.OK)
+                {
+                    Application.Run(new MainForm(loginForm.Workspace));
+                }
+            }
         }
     }
 }

@@ -33,8 +33,7 @@ namespace MSCD.UI
     public partial class MainForm : DevExpress.XtraEditors.XtraForm
     {
         private readonly Logger _logger = LogManager.GetCurrentClassLogger();
-        private Workspace _workspace;
-        private WaitDialogForm _waitForm;
+        private readonly Workspace _workspace;
         private MapControl _currentMapCtl;
         private Recordset _blinkRs;
         private int _blinkCount;
@@ -43,11 +42,12 @@ namespace MSCD.UI
         private LayerInfo _blinkLayerInfo;
         private readonly Dictionary<string,List<Layer>> _stationLayers=new Dictionary<string, List<Layer>>();
         private readonly Dictionary<String, List<Layer>> _siteLayers = new Dictionary<string, List<Layer>>(); 
-        public MainForm()
+        public MainForm(Workspace workspace)
         {
             this.Visible = false;
             InitializeComponent();
-            
+            _workspace = workspace;
+
         }
 
         #region 视图控制
@@ -74,20 +74,14 @@ namespace MSCD.UI
 
         protected override void OnLoad(EventArgs e)
         {
-            this.Visible = false;
-            this.Hide();
-            TestDatabaseConnect();
-            if(!this.IsDisposed)
-            {
-                this.Visible = true;
-                this.Show();
-                InitMap();
-                InitStationLayerTree();
-                InitSiteLayerTree();
-                _currentMapCtl = mapCtl_Station;
+            this.Visible = true;
+            this.Show();
+            InitMap();
+            InitStationLayerTree();
+            InitSiteLayerTree();
+            _currentMapCtl = mapCtl_Station;
 
-                RegisterHotkey();
-            }
+            RegisterHotkey();
         }
 
         private void RegisterHotkey()
@@ -100,104 +94,6 @@ namespace MSCD.UI
             HotKey.RegisterHotKey(Handle, 102, HotKey.KeyModifiers.Shift, Keys.S);//地图放大
             HotKey.RegisterHotKey(Handle, 103, HotKey.KeyModifiers.Shift, Keys.D);//地图缩小
             HotKey.RegisterHotKey(Handle, 104, HotKey.KeyModifiers.Shift, Keys.Z);//点选查询
-        }
-
-        private void TestDatabaseConnect()
-        {
-            SplashScreenManager.ShowForm(typeof (MyWaitForm), false, true);
-            SplashScreenManager.Default.SetWaitFormCaption("系统初始化");
-            SplashScreenManager.Default.SetWaitFormDescription("正在测试数据库连接,请稍候...");
-            var connectionStr = ConfigHelper.GetConfig("ConnectionString");
-            SqlConnection sqlConnection = null;
-            try
-            {
-                sqlConnection = new SqlConnection(connectionStr);
-                sqlConnection.Open();
-            }
-            catch (Exception ex)
-            {
-            }
-            finally
-            {
-                SplashScreenManager.CloseForm();
-                if (sqlConnection != null && sqlConnection.State == ConnectionState.Open)
-                {
-                    sqlConnection.Close();
-                    sqlConnection.Dispose();
-                    InitWorkspace();
-                }
-                else
-                {
-                    var dlgConfigDatabase = new DlgConfigDatabase();
-                    dlgConfigDatabase.ShowDialog();
-                    this.Close();
-                }
-            }
-        }
-
-        /// <summary>
-        /// 初始化工作空间
-        /// </summary>
-        private void InitWorkspace()
-        {
-            SplashScreenManager.ShowForm(typeof(MyWaitForm), false, true);
-            SplashScreenManager.Default.SetWaitFormCaption("系统初始化");
-            SplashScreenManager.Default.SetWaitFormDescription("正在初始化工作空间,请稍候...");
-
-            _workspace = new Workspace();
-            var workspaceConnectionInfo = new WorkspaceConnectionInfo
-            {
-                Type = WorkspaceType.SQL,
-                Driver = ConfigHelper.GetConfig("WorkspaceDriver"),
-                Server = ConfigHelper.GetConfig("WorkspaceServer"),
-                Database = ConfigHelper.GetConfig("WorkspaceDatabase"),
-                Name = ConfigHelper.GetConfig("WorkspaceName"),
-                User = ConfigHelper.GetConfig("WorkspaceUser"),
-                Password = ConfigHelper.GetConfig("WorkspacePassword")
-            };
-            var workspaceOpened = _workspace.Open(workspaceConnectionInfo);
-            SplashScreenManager.CloseForm();
-            if (workspaceOpened)
-            {
-                var datasoureName = ConfigHelper.GetConfig("StationDatasourceName");
-                if(_workspace.Datasources.Contains(datasoureName))
-                {
-                    var datasource = _workspace.Datasources[datasoureName];
-                    if (!datasource.IsConnected)
-                    {
-                        _workspace.Datasources.Close(datasoureName);
-                        _workspace.Datasources.Open(CreateDatasourceConnectionInfo(datasoureName));
-                        _workspace.Save();
-                    }
-                }
-                else
-                {
-                    var datasource = _workspace.Datasources.Open(CreateDatasourceConnectionInfo(datasoureName));
-                    _workspace.Save();
-                }
-            }
-            else
-            {
-                var dlgConfigWorkspace = new DlgConfigWorkspace();
-                dlgConfigWorkspace.ShowDialog();
-                this.Close();
-            }
-            
-        }
-
-        private DatasourceConnectionInfo CreateDatasourceConnectionInfo(string datasoureName)
-        {
-            var datasourceConnection = new DatasourceConnectionInfo()
-            {
-                EngineType = EngineType.SQLPlus,
-                Driver = ConfigHelper.GetConfig("WorkspaceDriver"),
-                Server = ConfigHelper.GetConfig("WorkspaceServer"),
-                Database = ConfigHelper.GetConfig("WorkspaceDatabase"),
-                User = ConfigHelper.GetConfig("WorkspaceUser"),
-                Password = ConfigHelper.GetConfig("WorkspacePassword"),
-                Alias = datasoureName
-            };
-            return datasourceConnection;
         }
 
         private void InitMap()
@@ -336,7 +232,9 @@ namespace MSCD.UI
                     var dlgSiteAttributeQuyer = new DlgAttributeQuery("site", this);
                     dlgSiteAttributeQuyer.ShowDialog();
                     break;
-                case"maintianQuery":
+                case "maintianQuery":
+                    var dlgMaintianQuery =new DlgMaintainQuery(this);
+                    dlgMaintianQuery.ShowDialog();
                     break;
                 case "viewAllAttribute":
                     ViewAllAttribute();
@@ -659,6 +557,8 @@ namespace MSCD.UI
                     dockPanel_LayerControl.Visible = true;
                     treeList_StationLayer.Visible = true;
                     treeList_SiteLayer.Visible = false;
+                    barCheckItem_LayerControl.Enabled = true;
+                    barCheckItem_QueryResult.Enabled = true;
                     break;
                 case 1:
                     _currentMapCtl = mapCtl_Site;
@@ -666,11 +566,15 @@ namespace MSCD.UI
                     dockPanel_LayerControl.Visible = true;
                     treeList_StationLayer.Visible = false;
                     treeList_SiteLayer.Visible = true;
+                    barCheckItem_LayerControl.Enabled = true;
+                    barCheckItem_QueryResult.Enabled = true;
                     break;
                 case 2:
                     toolBar_Map2D.Visible = false;
                     dockPanel_LayerControl.Visible = false;
                     dockPanel_QueryResult.Visible = false;
+                    barCheckItem_LayerControl.Enabled = false;
+                    barCheckItem_QueryResult.Enabled = false;
                     break;
             }
         }
@@ -741,8 +645,6 @@ namespace MSCD.UI
             gv.RowClick += new RowClickEventHandler(gv_RowClick);
             gv.DoubleClick += new EventHandler(gv_DoubleClick);
             gv.CustomDrawRowIndicator += new RowIndicatorCustomDrawEventHandler(gv_CustomDrawRowIndicator);
-            gv.OptionsView.ColumnAutoWidth = false;
-            gv.BestFitColumns();
             gv.IndicatorWidth = 50;
             gv.Tag = layerInfo;
 
@@ -790,9 +692,27 @@ namespace MSCD.UI
 
         private void xtraTabCtl_QueryResult_SelectedPageChanged(object sender, TabPageChangedEventArgs e)
         {
-            if(e.Page!=null)
+            if (e.Page != null)
             {
-                ((e.Page.Controls[0] as GridControl).MainView as GridView).Columns["SMID"].Visible = false;
+                var gridControl = e.Page.Controls[0] as GridControl;
+                if (gridControl != null)
+                {
+                    var gridView = gridControl.MainView as GridView;
+                    if (gridView != null)
+                    {
+                        gridView.Columns["SMID"].Visible = false;
+                        var layerInfo = gridView.Tag as LayerInfo;
+                        if (LayerService.INSTANCE.GetStationLayerInfos().Contains(layerInfo))
+                        {
+                            xtraTabCtl_Map.SelectedTabPageIndex = 0;
+                        }
+                        else
+                        {
+                            xtraTabCtl_Map.SelectedTabPageIndex = 1;
+                        }
+                    }
+
+                }
             }
             
         }

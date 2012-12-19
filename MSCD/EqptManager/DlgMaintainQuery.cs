@@ -107,7 +107,7 @@ namespace MSCD.UI.EqptManager
 
                     if(layerinfo!=null)
                     {
-                        var dt = WorkspaceService.Instance.GetDataset(ConfigHelper.GetConfig("DatasourceName"), layerEqpt.Key) as DatasetVector;
+                        var dt = WorkspaceService.Instance.GetDataset(ConfigHelper.GetConfig("StationDatasourceName"), layerEqpt.Key) as DatasetVector;
                         if (dt != null)
                         {
                             var rs = dt.Query(layerEqpt.Value.ToArray(), CursorType.Static);

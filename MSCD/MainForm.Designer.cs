@@ -50,6 +50,7 @@
             this.barButtonItem12 = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem13 = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem14 = new DevExpress.XtraBars.BarButtonItem();
+            this.barButtonItem19 = new DevExpress.XtraBars.BarButtonItem();
             this.MainMenu = new DevExpress.XtraBars.Bar();
             this.barSubItem5 = new DevExpress.XtraBars.BarSubItem();
             this.barSubItem6 = new DevExpress.XtraBars.BarSubItem();
@@ -91,7 +92,6 @@
             this.mapNav_Site = new SuperMap.UI.MapNavigationControl(this.components);
             this.timer_Blink = new System.Windows.Forms.Timer(this.components);
             this.popupMenu_StationTree = new DevExpress.XtraBars.PopupMenu(this.components);
-            this.barButtonItem19 = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.barMgr_Main)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dockManager1)).BeginInit();
             this.dockPanel_QueryResult.SuspendLayout();
@@ -306,6 +306,13 @@
             this.barButtonItem14.Name = "barButtonItem14";
             this.barButtonItem14.Tag = "polygonQuery";
             // 
+            // barButtonItem19
+            // 
+            this.barButtonItem19.Caption = "维护查询";
+            this.barButtonItem19.Id = 28;
+            this.barButtonItem19.Name = "barButtonItem19";
+            this.barButtonItem19.Tag = "maintianQuery";
+            // 
             // MainMenu
             // 
             this.MainMenu.BarName = "Main menu";
@@ -341,7 +348,9 @@
             this.barSubItem6.Caption = "数据查询";
             this.barSubItem6.Id = 22;
             this.barSubItem6.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
-            new DevExpress.XtraBars.LinkPersistInfo(this.barSubItem4)});
+            new DevExpress.XtraBars.LinkPersistInfo(this.barSubItem4),
+            new DevExpress.XtraBars.LinkPersistInfo(this.barSubItem7),
+            new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItem19)});
             this.barSubItem6.Name = "barSubItem6";
             // 
             // barSubItem2
@@ -735,13 +744,6 @@
             this.popupMenu_StationTree.Manager = this.barMgr_Main;
             this.popupMenu_StationTree.Name = "popupMenu_StationTree";
             // 
-            // barButtonItem19
-            // 
-            this.barButtonItem19.Caption = "维护查询";
-            this.barButtonItem19.Id = 28;
-            this.barButtonItem19.Name = "barButtonItem19";
-            this.barButtonItem19.Tag = "maintianQuery";
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
@@ -755,7 +757,7 @@
             this.Controls.Add(this.barDockControlTop);
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "MainForm";
+            this.Text = "成都监测台数字地理信息管理系统";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             ((System.ComponentModel.ISupportInitialize)(this.barMgr_Main)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dockManager1)).EndInit();
