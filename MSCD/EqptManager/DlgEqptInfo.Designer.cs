@@ -144,6 +144,7 @@
             this.pictureEdit_EqptImage.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Stretch;
             this.pictureEdit_EqptImage.Size = new System.Drawing.Size(210, 169);
             this.pictureEdit_EqptImage.TabIndex = 0;
+            this.pictureEdit_EqptImage.DoubleClick += new System.EventHandler(this.pictureEdit_EqptImage_DoubleClick);
             // 
             // btn_DeletePicture
             // 

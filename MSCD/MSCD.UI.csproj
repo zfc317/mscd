@@ -120,6 +120,7 @@
     <Compile Include="EqptManager\DlgEqptMaintain.Designer.cs">
       <DependentUpon>DlgEqptMaintain.cs</DependentUpon>
     </Compile>
+    <Compile Include="HotKey.cs" />
     <Compile Include="LayerManager\DlgAddLayerType.cs">
       <SubType>Form</SubType>
     </Compile>

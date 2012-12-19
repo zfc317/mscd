@@ -39,10 +39,13 @@ namespace MSCD.UI
         private Recordset _blinkRs;
         private int _blinkCount;
         private bool _isBlink;
+        private string _blinkLayerName;
+        private LayerInfo _blinkLayerInfo;
         private readonly Dictionary<string,List<Layer>> _stationLayers=new Dictionary<string, List<Layer>>();
         private readonly Dictionary<String, List<Layer>> _siteLayers = new Dictionary<string, List<Layer>>(); 
         public MainForm()
         {
+            this.Visible = false;
             InitializeComponent();
             
         }
@@ -82,8 +85,21 @@ namespace MSCD.UI
                 InitStationLayerTree();
                 InitSiteLayerTree();
                 _currentMapCtl = mapCtl_Station;
+
+                RegisterHotkey();
             }
-            
+        }
+
+        private void RegisterHotkey()
+        {
+            //注册热键Shift+S，Id号为100。HotKey.KeyModifiers.Shift也可以直接使用数字4来表示。
+            HotKey.RegisterHotKey(Handle, 100, HotKey.KeyModifiers.Shift, Keys.W);//全图显示
+            //注册热键Ctrl+B，Id号为101。HotKey.KeyModifiers.Ctrl也可以直接使用数字2来表示。
+            HotKey.RegisterHotKey(Handle, 101, HotKey.KeyModifiers.Shift, Keys.A);//地图平移
+            //注册热键Alt+D，Id号为102。HotKey.KeyModifiers.Alt也可以直接使用数字1来表示。
+            HotKey.RegisterHotKey(Handle, 102, HotKey.KeyModifiers.Shift, Keys.S);//地图放大
+            HotKey.RegisterHotKey(Handle, 103, HotKey.KeyModifiers.Shift, Keys.D);//地图缩小
+            HotKey.RegisterHotKey(Handle, 104, HotKey.KeyModifiers.Shift, Keys.Z);//点选查询
         }
 
         private void TestDatabaseConnect()
@@ -196,9 +212,8 @@ namespace MSCD.UI
                 InitStationLayers(mapCtl_Station.Map);
                 InitSiteLayers(mapCtl_Site.Map);
 
+
                 sceneCtl_Station.Scene.Open(ConfigHelper.GetConfig("StationSceneName"));
-                var layer3D = sceneCtl_Station.Scene.Layers.Add(@".\Data\台区场景\台区场景.scv", Layer3DType.VectorFile, true, "台区场景", "") as Layer3DVectorFile;
-                layer3D.IsSelectable = false;
                 sceneCtl_Station.Scene.Refresh();
             }
             catch (Exception ex)
@@ -321,7 +336,41 @@ namespace MSCD.UI
                     var dlgSiteAttributeQuyer = new DlgAttributeQuery("site", this);
                     dlgSiteAttributeQuyer.ShowDialog();
                     break;
+                case "viewAllAttribute":
+                    ViewAllAttribute();
+                    break;
+                case "blinkLayer":
+                    BlinkLayer();
+                    break;
             }
+        }
+
+        private void BlinkLayer()
+        {
+            var dt = WorkspaceService.Instance.GetDataset(ConfigHelper.GetConfig("StationDatasourceName"), _blinkLayerName) as DatasetVector;
+            if (dt == null) return;
+            var rs = dt.GetRecordset(false, CursorType.Static);
+
+            _blinkRs = rs;
+            timer_Blink.Enabled = true;
+            timer_Blink.Interval = 500;
+            _blinkCount = 1;
+            timer_Blink.Start();
+
+        }
+
+        private void ViewAllAttribute()
+        {
+            var dt = WorkspaceService.Instance.GetDataset(ConfigHelper.GetConfig("StationDatasourceName"), _blinkLayerName) as DatasetVector;
+            if (dt == null) return;
+
+            var rs = dt.GetRecordset(false, CursorType.Static);
+            var table = GISUtility.RecordsetToDataTable(rs, _blinkLayerInfo);
+            rs.Close();
+            rs.Dispose();
+            dt.Close();
+            ShowQueryResult();
+            CreateQueryResultGrid(table, _blinkLayerInfo);
         }
 
         private void InitStationLayerTree()
@@ -521,6 +570,19 @@ namespace MSCD.UI
                     var stationLayerInfos = LayerService.INSTANCE.GetStationLayerInfos();
                     SetCheckedNode(treeList_StationLayer, mapCtl_Station.Map, _stationLayers,stationLayerInfos, hInfo.Node, checkState);
                 }
+            }else if(e.Button==MouseButtons.Right)
+            {
+                var hInfo = treeList_StationLayer.CalcHitInfo(new Point(e.X, e.Y));
+                if(hInfo.Node!=null)
+                {
+                    if(hInfo.Node["Type"].ToString()=="layer")
+                    {
+                        _blinkLayerName = hInfo.Node["Name"].ToString();
+                        _blinkLayerInfo =
+                            LayerService.INSTANCE.GetStationLayerInfos().First(l => l.LayerName == _blinkLayerName);
+                        popupMenu_StationTree.ShowPopup(MousePosition);
+                    }
+                }
             }
         }
 
@@ -542,6 +604,20 @@ namespace MSCD.UI
                     }
                     var siteLayerInfos = LayerService.INSTANCE.GetSiteLayerInfos();
                     SetCheckedNode(treeList_SiteLayer, mapCtl_Site.Map, _siteLayers, siteLayerInfos, hInfo.Node, checkState);
+                }
+            }
+            else if (e.Button == MouseButtons.Right)
+            {
+                var hInfo = treeList_SiteLayer.CalcHitInfo(new Point(e.X, e.Y));
+                if (hInfo.Node != null)
+                {
+                    if (hInfo.Node["Name"].ToString().Contains("遥控站"))
+                    {
+                        _blinkLayerName = hInfo.Node["Name"].ToString();
+                        _blinkLayerInfo =
+                            LayerService.INSTANCE.GetSiteLayerInfos().First(l => l.LayerName == _blinkLayerName);
+                        popupMenu_StationTree.ShowPopup(MousePosition);
+                    }
                 }
             }
         }
@@ -662,11 +738,23 @@ namespace MSCD.UI
             gc.DataSource = dt;
             gv.RowClick += new RowClickEventHandler(gv_RowClick);
             gv.DoubleClick += new EventHandler(gv_DoubleClick);
+            gv.CustomDrawRowIndicator += new RowIndicatorCustomDrawEventHandler(gv_CustomDrawRowIndicator);
+            gv.OptionsView.ColumnAutoWidth = false;
+            gv.BestFitColumns();
+            gv.IndicatorWidth = 50;
             gv.Tag = layerInfo;
 
             var tab = new XtraTabPage() { Text = layerInfo.LayerCaption };
             tab.Controls.Add(gc);
             xtraTabCtl_QueryResult.TabPages.Add(tab);
+        }
+
+        void gv_CustomDrawRowIndicator(object sender, RowIndicatorCustomDrawEventArgs e)
+        {
+            if(e.Info.IsRowIndicator&&e.RowHandle>=0)
+            {
+                e.Info.DisplayText = (e.RowHandle + 1).ToString();
+            }
         }
 
         void gv_DoubleClick(object sender, EventArgs e)
@@ -787,10 +875,41 @@ namespace MSCD.UI
             }
         }
 
-        
+        protected override void WndProc(ref Message m)
+        {
+            
+            const int WM_HOTKEY = 0x0312;
+            //按快捷键 
+            switch (m.Msg)
+            {
+                case WM_HOTKEY:
+                    switch (m.WParam.ToInt32())
+                    {
+                        case 100:    //按下的是Shift+W，全图显示
+                            _currentMapCtl.Map.ViewEntire();
+                            _currentMapCtl.Refresh();
+                            break;
+                        case 101:    //按下的是Shift+A，平移地图
+                            _currentMapCtl.Action = Action.Pan;
+                            _currentMapCtl.Refresh();
+                            break;
+                        case 102:    //按下的是Shift+S，缩小地图
+                            _currentMapCtl.Action = Action.ZoomOut;
+                            _currentMapCtl.Refresh();
+                            break;
+                        case 103://按下的是Shift+D，放大地图
+                            _currentMapCtl.Action = Action.ZoomIn;
+                            _currentMapCtl.Refresh();
+                            break;
+                        case 104://按下的是Shift+Z,点选查询
+                            _currentMapCtl.Action = Action.Select;
+                            _currentMapCtl.Refresh();
+                            break;
+                    }
+                    break;
+            }
+            base.WndProc(ref m);
 
-        
-
-        
+        }       
     }
 }

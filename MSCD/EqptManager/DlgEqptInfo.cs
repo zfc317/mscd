@@ -41,6 +41,11 @@ namespace MSCD.UI.EqptManager
             InitAttachmentGrid();
 
             Text = layerInfo.LayerCaption + "属性信息";
+
+            if (_layerInfo.LayerName.Contains("遥控站"))
+            {
+                xtraTabControl1.TabPages.Remove(tabPage_Maintain);
+            }
         }
 
         public override sealed string Text
@@ -144,7 +149,7 @@ namespace MSCD.UI.EqptManager
 
         private void btn_AddPicture_Click(object sender, EventArgs e)
         {
-            var openFileDialog = new OpenFileDialog() { Filter = "*.JPG;*.PNG;*.GIF;*.EMF|*.JPG;*.PNG;*.GIF;*.EMF" };
+            var openFileDialog = new OpenFileDialog() { Filter = "*.JPG;*.PNG;*.GIF;*.EMF;*.WMF|*.JPG;*.PNG;*.GIF;*.EMF;*.WMF" };
             if(openFileDialog.ShowDialog()==DialogResult.OK)
             {
                 var fileName = openFileDialog.FileName;
@@ -460,5 +465,31 @@ namespace MSCD.UI.EqptManager
             }
         }
 
+        private void pictureEdit_EqptImage_DoubleClick(object sender, EventArgs e)
+        {
+            try
+            {
+                if (gv_Image.FocusedRowHandle < 0) return;
+                FileUtils.ClearDirectory(Application.StartupPath + "\\Temp");
+                var imageId = Convert.ToInt32(gv_Image.GetFocusedRowCellValue("Id"));
+                var fileName = gv_Image.GetFocusedRowCellValue("ImageName").ToString();
+
+                var eqptImageBll = new EqptImage();
+                var imageModel = eqptImageBll.GetModel(imageId);
+
+                var fs = new FileStream(Application.StartupPath + "\\Temp\\" + fileName, FileMode.OpenOrCreate);
+                var bw = new BinaryWriter(fs);
+                bw.Write(imageModel.Image, 0, imageModel.Image.Length);
+                bw.Close();
+                fs.Close();
+
+
+                Process.Start(Application.StartupPath + "\\Temp\\" + fileName);
+            }
+            catch (Exception ex)
+            {
+                XtraMessageBox.Show("打开出错！", "提示");
+            }
+            }
     }
 }
