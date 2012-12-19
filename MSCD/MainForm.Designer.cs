@@ -57,6 +57,7 @@
             this.barSubItem2 = new DevExpress.XtraBars.BarSubItem();
             this.barButtonItem3 = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem4 = new DevExpress.XtraBars.BarButtonItem();
+            this.barButtonItem20 = new DevExpress.XtraBars.BarButtonItem();
             this.barSubItem1 = new DevExpress.XtraBars.BarSubItem();
             this.barCheckItem_LayerControl = new DevExpress.XtraBars.BarCheckItem();
             this.barCheckItem_QueryResult = new DevExpress.XtraBars.BarCheckItem();
@@ -154,9 +155,10 @@
             this.barButtonItem16,
             this.barButtonItem17,
             this.barButtonItem18,
-            this.barButtonItem19});
+            this.barButtonItem19,
+            this.barButtonItem20});
             this.barMgr_Main.MainMenu = this.MainMenu;
-            this.barMgr_Main.MaxItemId = 29;
+            this.barMgr_Main.MaxItemId = 30;
             this.barMgr_Main.StatusBar = this.bar3;
             this.barMgr_Main.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barMgr_Main_ItemClick);
             // 
@@ -359,7 +361,8 @@
             this.barSubItem2.Id = 5;
             this.barSubItem2.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
             new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItem3),
-            new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItem4)});
+            new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItem4),
+            new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItem20, true)});
             this.barSubItem2.Name = "barSubItem2";
             // 
             // barButtonItem3
@@ -375,6 +378,13 @@
             this.barButtonItem4.Id = 7;
             this.barButtonItem4.Name = "barButtonItem4";
             this.barButtonItem4.Tag = "layercatalog";
+            // 
+            // barButtonItem20
+            // 
+            this.barButtonItem20.Caption = "用户管理";
+            this.barButtonItem20.Id = 29;
+            this.barButtonItem20.Name = "barButtonItem20";
+            this.barButtonItem20.Tag = "userManager";
             // 
             // barSubItem1
             // 
@@ -843,5 +853,6 @@
         private DevExpress.XtraBars.PopupMenu popupMenu_StationTree;
         private DevExpress.XtraBars.BarButtonItem barButtonItem18;
         private DevExpress.XtraBars.BarButtonItem barButtonItem19;
+        private DevExpress.XtraBars.BarButtonItem barButtonItem20;
     }
 }

@@ -163,6 +163,30 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SystemManager\DlgConfigDatabase.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SystemManager\DlgConfigDatabase.designer.cs">
+      <DependentUpon>DlgConfigDatabase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SystemManager\DlgConfigWorkspace.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SystemManager\DlgConfigWorkspace.Designer.cs">
+      <DependentUpon>DlgConfigWorkspace.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SystemManager\DlgUserInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SystemManager\DlgUserInfo.Designer.cs">
+      <DependentUpon>DlgUserInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SystemManager\DlgUserManager.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SystemManager\DlgUserManager.Designer.cs">
+      <DependentUpon>DlgUserManager.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="DlgLoginForm.resx">
       <DependentUpon>DlgLoginForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -205,6 +229,18 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="SystemManager\DlgConfigDatabase.resx">
+      <DependentUpon>DlgConfigDatabase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SystemManager\DlgConfigWorkspace.resx">
+      <DependentUpon>DlgConfigWorkspace.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SystemManager\DlgUserInfo.resx">
+      <DependentUpon>DlgUserInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SystemManager\DlgUserManager.resx">
+      <DependentUpon>DlgUserManager.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
@@ -244,7 +280,16 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="SystemManager\" />
+    <None Include="Resources\mscd登录界面.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\8e1f11d0af04c38e1b208779565f9df0.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\扫描动态.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\扫描动态1.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

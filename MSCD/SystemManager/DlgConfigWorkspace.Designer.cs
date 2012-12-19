@@ -1,4 +1,4 @@
-﻿namespace MSCD.GIS
+﻿namespace MSCD.UI.SystemManager
 {
     partial class DlgConfigWorkspace
     {

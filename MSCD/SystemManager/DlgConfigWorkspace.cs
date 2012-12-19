@@ -4,7 +4,7 @@ using DevExpress.XtraEditors;
 using MSCD.Common;
 using SuperMap.Data;
 
-namespace MSCD.GIS
+namespace MSCD.UI.SystemManager
 {
     public partial class DlgConfigWorkspace : DevExpress.XtraEditors.XtraForm
     {

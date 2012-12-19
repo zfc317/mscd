@@ -20,6 +20,7 @@ using MSCD.Model;
 using MSCD.Services;
 using MSCD.UI.EqptManager;
 using MSCD.UI.LayerManager;
+using MSCD.UI.SystemManager;
 using SuperMap.Data;
 using NLog;
 using SuperMap.Mapping;
@@ -221,6 +222,10 @@ namespace MSCD.UI
                     break;
                 case "polygonQuery":
                     if (_currentMapCtl != null) _currentMapCtl.Action = Action.SelectRegion;
+                    break;
+                case "userManager":
+                    var dlgUserManager = new DlgUserManager();
+                    dlgUserManager.ShowDialog();
                     break;
                 case "stationAttributeQuery":
                     xtraTabCtl_Map.SelectedTabPageIndex = 0;
@@ -478,9 +483,13 @@ namespace MSCD.UI
                     if(hInfo.Node["Type"].ToString()=="layer")
                     {
                         _blinkLayerName = hInfo.Node["Name"].ToString();
-                        _blinkLayerInfo =
+                        var selectedLayer  =
                             LayerService.INSTANCE.GetStationLayerInfos().First(l => l.LayerName == _blinkLayerName);
-                        popupMenu_StationTree.ShowPopup(MousePosition);
+                        if (selectedLayer.Queryable)
+                        {
+                            _blinkLayerInfo = selectedLayer;
+                            popupMenu_StationTree.ShowPopup(MousePosition);
+                        }
                     }
                 }
             }
@@ -514,9 +523,14 @@ namespace MSCD.UI
                     if (hInfo.Node["Name"].ToString().Contains("遥控站"))
                     {
                         _blinkLayerName = hInfo.Node["Name"].ToString();
-                        _blinkLayerInfo =
+                        var selectedLayer =
                             LayerService.INSTANCE.GetSiteLayerInfos().First(l => l.LayerName == _blinkLayerName);
-                        popupMenu_StationTree.ShowPopup(MousePosition);
+                        if (selectedLayer.Queryable)
+                        {
+                            _blinkLayerInfo = selectedLayer;
+                            popupMenu_StationTree.ShowPopup(MousePosition);
+                        }
+                        
                     }
                 }
             }

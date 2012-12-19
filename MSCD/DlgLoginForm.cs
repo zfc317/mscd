@@ -11,6 +11,7 @@ using DevExpress.XtraSplashScreen;
 using MSCD.BLL;
 using MSCD.Common;
 using MSCD.GIS;
+using MSCD.UI.SystemManager;
 using SuperMap.Data;
 
 namespace MSCD.UI
@@ -163,6 +164,14 @@ namespace MSCD.UI
                 
             }
             
+        }
+
+        private void txt_UserName_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.Enter)
+            {
+                btn_Login_Click(sender, e);
+            }
         }
     }
 }

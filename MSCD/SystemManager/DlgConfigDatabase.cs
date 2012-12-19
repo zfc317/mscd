@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using DevExpress.XtraEditors;
 using MSCD.Common;
 
-namespace MSCD.GIS
+namespace MSCD.UI.SystemManager
 {
     public partial class DlgConfigDatabase : DevExpress.XtraEditors.XtraForm
     {
