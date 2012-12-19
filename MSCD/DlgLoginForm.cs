@@ -19,6 +19,7 @@ namespace MSCD.UI
     public partial class DlgLoginForm : DevExpress.XtraEditors.XtraForm
     {
         public Workspace Workspace { get; private set; }
+        public Model.User User { get; private set; }
 
         public DlgLoginForm()
         {
@@ -153,6 +154,7 @@ namespace MSCD.UI
                 {
                     if(Common.DEncrypt.DESEncrypt.Encrypt(password)==userMdoel.Password)
                     {
+                        User = userMdoel;
                         DialogResult = DialogResult.OK;
                     }
                     else

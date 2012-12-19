@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Forms;
+using MSCD.Model;
 
 namespace MSCD.UI
 {
@@ -22,7 +23,7 @@ namespace MSCD.UI
             {
                 if (loginResult == DialogResult.OK)
                 {
-                    Application.Run(new MainForm(loginForm.Workspace));
+                    Application.Run(new MainForm(loginForm.Workspace, loginForm.User));
                 }
             }
         }

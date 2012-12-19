@@ -41,13 +41,15 @@ namespace MSCD.UI
         private bool _isBlink;
         private string _blinkLayerName;
         private LayerInfo _blinkLayerInfo;
+        private User _user;
         private readonly Dictionary<string,List<Layer>> _stationLayers=new Dictionary<string, List<Layer>>();
         private readonly Dictionary<String, List<Layer>> _siteLayers = new Dictionary<string, List<Layer>>(); 
-        public MainForm(Workspace workspace)
+        public MainForm(Workspace workspace,User user)
         {
             this.Visible = false;
             InitializeComponent();
             _workspace = workspace;
+            _user = user;
 
         }
 
