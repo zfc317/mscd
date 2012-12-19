@@ -336,6 +336,8 @@ namespace MSCD.UI
                     var dlgSiteAttributeQuyer = new DlgAttributeQuery("site", this);
                     dlgSiteAttributeQuyer.ShowDialog();
                     break;
+                case"maintianQuery":
+                    break;
                 case "viewAllAttribute":
                     ViewAllAttribute();
                     break;
