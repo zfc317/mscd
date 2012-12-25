@@ -9,7 +9,7 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MSCD.UI</RootNamespace>
-    <AssemblyName>MSCD.UI</AssemblyName>
+    <AssemblyName>监测台数字地理信息系统</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
@@ -33,6 +33,9 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>20121220094544324_easyicon_cn_48.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DevExpress.Data.v12.1, Version=12.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
@@ -145,6 +148,12 @@
     <Compile Include="LayerManager\DlgLayerCatalog.Designer.cs">
       <DependentUpon>DlgLayerCatalog.cs</DependentUpon>
     </Compile>
+    <Compile Include="LayerManager\DlgLayerFilter.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LayerManager\DlgLayerFilter.Designer.cs">
+      <DependentUpon>DlgLayerFilter.cs</DependentUpon>
+    </Compile>
     <Compile Include="LayerManager\DlgLayerType.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -187,6 +196,12 @@
     <Compile Include="SystemManager\DlgUserManager.Designer.cs">
       <DependentUpon>DlgUserManager.cs</DependentUpon>
     </Compile>
+    <Compile Include="TestForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestForm.Designer.cs">
+      <DependentUpon>TestForm.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="DlgLoginForm.resx">
       <DependentUpon>DlgLoginForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -210,6 +225,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="LayerManager\DlgLayerCatalog.resx">
       <DependentUpon>DlgLayerCatalog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LayerManager\DlgLayerFilter.resx">
+      <DependentUpon>DlgLayerFilter.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LayerManager\DlgLayerType.resx">
       <DependentUpon>DlgLayerType.cs</DependentUpon>
@@ -240,6 +258,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SystemManager\DlgUserManager.resx">
       <DependentUpon>DlgUserManager.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestForm.resx">
+      <DependentUpon>TestForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config">
       <SubType>Designer</SubType>
@@ -283,13 +304,8 @@
     <None Include="Resources\mscd登录界面.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\8e1f11d0af04c38e1b208779565f9df0.gif" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\扫描动态.gif" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\扫描动态1.gif" />
+    <Content Include="20121220094544324_easyicon_cn_48.ico" />
+    <None Include="Resources\msg.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

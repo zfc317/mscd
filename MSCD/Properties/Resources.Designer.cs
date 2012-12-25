@@ -60,13 +60,6 @@ namespace MSCD.UI.Properties {
             }
         }
         
-        internal static System.Drawing.Bitmap _8e1f11d0af04c38e1b208779565f9df0 {
-            get {
-                object obj = ResourceManager.GetObject("8e1f11d0af04c38e1b208779565f9df0", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
         internal static System.Drawing.Bitmap mscd登录界面 {
             get {
                 object obj = ResourceManager.GetObject("mscd登录界面", resourceCulture);
@@ -74,16 +67,9 @@ namespace MSCD.UI.Properties {
             }
         }
         
-        internal static System.Drawing.Bitmap 扫描动态 {
+        internal static System.Drawing.Bitmap msg {
             get {
-                object obj = ResourceManager.GetObject("扫描动态", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Bitmap 扫描动态1 {
-            get {
-                object obj = ResourceManager.GetObject("扫描动态1", resourceCulture);
+                object obj = ResourceManager.GetObject("msg", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Reflection;
+using System.Resources;
 using System.Threading;
 using System.Drawing;
 using System.Windows.Forms;
 using DevExpress.Utils;
+using DevExpress.XtraBars.Alerter;
 using DevExpress.XtraEditors;
 using DevExpress.XtraGrid;
 using DevExpress.XtraGrid.Views.Grid;
@@ -28,6 +31,7 @@ using SuperMap.Realspace;
 using SuperMap.UI;
 using Action = SuperMap.UI.Action;
 using Application = System.Windows.Forms.Application;
+using SelectionMode = SuperMap.UI.SelectionMode;
 
 namespace MSCD.UI
 {
@@ -85,6 +89,68 @@ namespace MSCD.UI
             _currentMapCtl = mapCtl_Station;
 
             RegisterHotkey();
+
+
+            CheckExpireMaintain();
+
+            
+        }
+
+        void alertControl1_AlertClick(object sender, AlertClickEventArgs e)
+        {
+            var expireMaintains = (List<EqptMaintain>) e.Info.Tag;
+            var layerEqpts = new Dictionary<string, List<int>>();
+
+            foreach (var eqptMaintain in expireMaintains)
+            {
+                if (layerEqpts.ContainsKey(eqptMaintain.LayerName))
+                {
+                    layerEqpts[eqptMaintain.LayerName].Add(eqptMaintain.SmId);
+                }
+                else
+                {
+                    layerEqpts.Add(eqptMaintain.LayerName, new List<int>() { eqptMaintain.SmId });
+                }
+            }
+
+            if (layerEqpts.Count < 0) return;
+            this.ShowQueryResult();
+            foreach (var layerEqpt in layerEqpts)
+            {
+                var layerinfo = LayerService.INSTANCE.GetStationLayerInfos().Any(l => l.LayerName == layerEqpt.Key) ? LayerService.INSTANCE.GetStationLayerInfos().First(l => l.LayerName == layerEqpt.Key) : LayerService.INSTANCE.GetSiteLayerInfos().First(l => l.LayerName == layerEqpt.Key);
+
+                if (layerinfo != null)
+                {
+                    var dt = WorkspaceService.Instance.GetDataset(ConfigHelper.GetConfig("StationDatasourceName"), layerEqpt.Key) as DatasetVector;
+                    if (dt != null)
+                    {
+                        var rs = dt.Query(layerEqpt.Value.ToArray(), CursorType.Static);
+                        var datatable = GISUtility.RecordsetToDataTable(rs, layerinfo);
+                        rs.Close();
+                        rs.Dispose();
+                        dt.Close();
+
+                        this.CreateQueryResultGrid(datatable, layerinfo);
+                    }
+                }
+            }
+        }
+
+        private void CheckExpireMaintain()
+        {
+           var expireDate =  Convert.ToInt32(ConfigHelper.GetConfig("ExpireDate"));
+
+            var maintainBll = new BLL.EqptMaintain();
+            var expireMaintains = maintainBll.GetModelList(string.Format("NextMaintainDate between '{0}' and '{1}'", DateTime.Now, DateTime.Now.AddDays(expireDate)));
+            if(expireMaintains.Count>0)
+            {
+                var rm = new ResourceManager("MSCD.UI.Properties.Resources", Assembly.GetExecutingAssembly());
+                var info = new AlertInfo("设施到期提醒", string.Format("距现在{0}天即将维护到期\r\n的设施有{1}个,点击查看详情。", expireDate, expireMaintains.Count)) { Image = (Image)rm.GetObject("msg") };
+                info.Tag = expireMaintains;
+                alertControl1.Show(this, info);
+                alertControl1.AlertClick += new AlertClickEventHandler(alertControl1_AlertClick);
+            }
+            
         }
 
         private void RegisterHotkey()
@@ -107,6 +173,7 @@ namespace MSCD.UI
                 mapCtl_Site.Map.Workspace = _workspace;
                 sceneCtl_Station.Scene.Workspace = _workspace;
                 mapCtl_Station.Map.Open(ConfigHelper.GetConfig("StationMapName"));
+                mapCtl_Station.SelectionMode=SelectionMode.Intersect;
                 mapCtl_Site.Map.Open(ConfigHelper.GetConfig("SiteMapName"));
                 InitStationLayers(mapCtl_Station.Map);
                 InitSiteLayers(mapCtl_Site.Map);
@@ -249,6 +316,19 @@ namespace MSCD.UI
                 case "blinkLayer":
                     BlinkLayer();
                     break;
+                case "displayFilter":
+                    DisplayFilter();
+                    break;
+                case "clearDisplayFilter":
+                    ClearDisplayFilter();
+                    break;
+                case "exportMap":
+                    var saveDlg = new SaveFileDialog(){Filter = "*.JPG|*.JPG"};
+                    if (saveDlg.ShowDialog()==DialogResult.OK)
+                    {
+                        _currentMapCtl.Map.OutputMapToJPG(saveDlg.FileName);
+                    }
+                    break;
             }
         }
 
@@ -278,6 +358,64 @@ namespace MSCD.UI
             dt.Close();
             ShowQueryResult();
             CreateQueryResultGrid(table, _blinkLayerInfo);
+        }
+
+        private void DisplayFilter()
+        {
+            if(treeList_StationLayer.Visible)
+            {
+                var layers = _stationLayers[_blinkLayerName];
+                var layerInfo = LayerService.INSTANCE.GetStationLayerInfos().First(l => l.LayerName == _blinkLayerName);
+                var dlgLayerDisplayFilter = new DlgLayerFilter(layerInfo.FieldInfos);
+                if (dlgLayerDisplayFilter.ShowDialog() == DialogResult.OK)
+                {
+                    var condition = dlgLayerDisplayFilter.Condition;
+                    foreach (var layer in layers)
+                    {
+                        var queryParameter = new QueryParameter { AttributeFilter = condition };
+                        layer.DisplayFilter = queryParameter;
+                    }
+                }
+            }
+            else
+            {
+                var layers = _siteLayers[_blinkLayerName];
+                var layerInfo = LayerService.INSTANCE.GetSiteLayerInfos().First(l => l.LayerName == _blinkLayerName);
+                var dlgLayerDisplayFilter = new DlgLayerFilter(layerInfo.FieldInfos);
+                if(dlgLayerDisplayFilter.ShowDialog()==DialogResult.OK)
+                {
+                    var condition = dlgLayerDisplayFilter.Condition;
+                    foreach (var layer in layers)
+                    {
+                        var queryParameter = new QueryParameter {AttributeFilter = condition};
+                        layer.DisplayFilter = queryParameter;
+                    }
+                }
+            }
+            _currentMapCtl.Map.Refresh();
+        }
+
+        private void ClearDisplayFilter()
+        {
+            if (treeList_StationLayer.Visible)
+            {
+                var layers = _stationLayers[_blinkLayerName];
+                    foreach (var layer in layers)
+                    {
+                        var queryParameter = new QueryParameter { AttributeFilter = "" };
+                        layer.DisplayFilter = queryParameter;
+                    }
+            }
+            else
+            {
+                var layers = _siteLayers[_blinkLayerName];
+                    foreach (var layer in layers)
+                    {
+                        var queryParameter = new QueryParameter { AttributeFilter = "" };
+                        layer.DisplayFilter = queryParameter;
+                    }
+            }
+            _currentMapCtl.Map.Refresh();
         }
 
         private void InitStationLayerTree()
@@ -397,7 +535,7 @@ namespace MSCD.UI
                 {
                     layer.IsVisible = checkState == CheckState.Checked;
                     var layerInfo = layerInfos.First(l => l.LayerName == layerName);
-                    layer.IsSelectable = layerInfo.Queryable;
+                    layer.IsSelectable = layer.Name == layerName + "@" + ConfigHelper.GetConfig("StationDatasourceName") && layerInfo.Queryable;
                 }
             }
 
@@ -522,7 +660,8 @@ namespace MSCD.UI
                 var hInfo = treeList_SiteLayer.CalcHitInfo(new Point(e.X, e.Y));
                 if (hInfo.Node != null)
                 {
-                    if (hInfo.Node["Name"].ToString().Contains("遥控站"))
+                    var selectedLayerName = hInfo.Node["Name"].ToString();
+                    if (selectedLayerName.Contains("遥控站") || selectedLayerName.Contains("采集点") || selectedLayerName.Contains("站点"))
                     {
                         _blinkLayerName = hInfo.Node["Name"].ToString();
                         var selectedLayer =
@@ -815,7 +954,7 @@ namespace MSCD.UI
 
         protected override void WndProc(ref Message m)
         {
-            
+
             const int WM_HOTKEY = 0x0312;
             //按快捷键 
             switch (m.Msg)
@@ -848,6 +987,87 @@ namespace MSCD.UI
             }
             base.WndProc(ref m);
 
-        }       
+        }
+
+        private void btn_CheckAllNode_Click(object sender, EventArgs e)
+        {
+            if(treeList_StationLayer.Visible)
+            {
+                var nodes = treeList_StationLayer.Nodes;
+                foreach (TreeListNode node in nodes)
+                {
+                    SetCheckedNode(treeList_StationLayer,mapCtl_Station.Map,_stationLayers,LayerService.INSTANCE.GetStationLayerInfos(),node,CheckState.Checked);
+                }
+            }
+            else
+            {
+                var nodes = treeList_SiteLayer.Nodes;
+                foreach (TreeListNode node in nodes)
+                {
+                    SetCheckedNode(treeList_SiteLayer, mapCtl_Site.Map, _siteLayers, LayerService.INSTANCE.GetSiteLayerInfos(), node, CheckState.Checked);
+                }
+            }
+        }
+
+        private void btn_UncheckAllNode_Click(object sender, EventArgs e)
+        {
+            if (treeList_StationLayer.Visible)
+            {
+                var nodes = treeList_StationLayer.Nodes;
+                foreach (TreeListNode node in nodes)
+                {
+                    SetCheckedNode(treeList_StationLayer, mapCtl_Station.Map, _stationLayers, LayerService.INSTANCE.GetStationLayerInfos(), node, CheckState.Unchecked);
+                }
+            }
+            else
+            {
+                var nodes = treeList_SiteLayer.Nodes;
+                foreach (TreeListNode node in nodes)
+                {
+                    SetCheckedNode(treeList_SiteLayer, mapCtl_Site.Map, _siteLayers, LayerService.INSTANCE.GetSiteLayerInfos(), node, CheckState.Unchecked);
+                }
+            }
+        }
+
+        private void btn_CheckInvert_Click(object sender, EventArgs e)
+        {
+            if (treeList_StationLayer.Visible)
+            {
+                var nodes = treeList_StationLayer.Nodes;
+                foreach (TreeListNode node in nodes)
+                {
+                    var cNodes = node.Nodes;
+                    foreach (TreeListNode cNode in cNodes)
+                    {
+                        if (CheckState.Checked == (CheckState)cNode.Tag)
+                        {
+                            SetCheckedNode(treeList_StationLayer, mapCtl_Station.Map, _stationLayers, LayerService.INSTANCE.GetStationLayerInfos(), cNode, CheckState.Unchecked);
+                        }
+                        else
+                        {
+                            SetCheckedNode(treeList_StationLayer, mapCtl_Station.Map, _stationLayers, LayerService.INSTANCE.GetStationLayerInfos(), cNode, CheckState.Checked);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                var nodes = treeList_SiteLayer.Nodes;
+                foreach (TreeListNode node in nodes)
+                {
+                    if (CheckState.Checked == (CheckState) node.Tag)
+                    {
+                        SetCheckedNode(treeList_SiteLayer, mapCtl_Site.Map, _siteLayers, LayerService.INSTANCE.GetSiteLayerInfos(), node,CheckState.Unchecked); ;
+                    }
+                    else
+                    {
+                        SetCheckedNode(treeList_SiteLayer, mapCtl_Site.Map, _siteLayers, LayerService.INSTANCE.GetSiteLayerInfos(), node, CheckState.Checked); ;
+                    }
+                    
+                }
+            }
+        }
+
+        
     }
 }

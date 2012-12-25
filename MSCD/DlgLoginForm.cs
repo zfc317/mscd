@@ -146,7 +146,7 @@ namespace MSCD.UI
                 var password = txt_Password.Text.Trim();
                 var userBll = new User();
                 var userMdoel = userBll.GetModel(userName);
-                if(userMdoel==null)
+                if(userMdoel==null||userMdoel.Username!=userName)
                 {
                     XtraMessageBox.Show("用户名不存在！");
                 }

@@ -19,7 +19,7 @@ namespace MSCD.UI
             Application.SetCompatibleTextRenderingDefault(false);
             var loginForm = new DlgLoginForm();
             var loginResult = loginForm.ShowDialog();
-            if(!loginForm.IsDisposed)
+            if (!loginForm.IsDisposed)
             {
                 if (loginResult == DialogResult.OK)
                 {
